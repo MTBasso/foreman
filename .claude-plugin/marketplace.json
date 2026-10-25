@@ -1,0 +1,14 @@
+{
+  "name": "foreman-marketplace",
+  "description": "Local marketplace for the foreman plugin (personal use, not submitted to the public directory).",
+  "owner": {
+    "name": "Matheus Basso"
+  },
+  "plugins": [
+    {
+      "name": "foreman",
+      "source": "./",
+      "description": "Foreman: orchestrator skills that grill features/bugs, run plans, and ship releases by delegating to dedicated agents."
+    }
+  ]
+}

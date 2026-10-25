@@ -1,0 +1,8 @@
+{
+  "name": "foreman",
+  "version": "0.1.0",
+  "description": "Foreman: orchestrator skills (tech-lead, plan-runner, release-manager) that grill features/bugs, run plans, and ship releases by delegating to dedicated sub-agents -- never editing code or writing plans themselves.",
+  "author": {
+    "name": "Matheus Basso"
+  }
+}
