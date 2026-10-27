@@ -1,5 +1,7 @@
 # foreman
 
+🇺🇸 English | [🇧🇷 Português](README.pt-BR.md)
+
 A Claude Code plugin of orchestrator skills that grill features and bugs with
 you, run plans, and ship releases — by delegating every line of actual work
 to dedicated sub-agents. None of them ever edit code or write a plan
@@ -200,3 +202,12 @@ claude plugin install impeccable@impeccable
 - `impeccable` (by Paul Bakaus, not Matt Pocock) — audits/fixes generic "AI
   slop" styling. `frontend-dev` runs it on everything it builds; `qa` also
   runs it on older UI that predates this workflow.
+
+## Acknowledgments
+
+A lot of what shaped how this plugin thinks about agentic workflows came
+from Matt Pocock's free [Dictionary of AI
+Coding](https://github.com/mattpocock/dictionary-of-ai-coding) — it's worth
+reading on its own. This plugin also runs several of his skills directly
+(`grill-me`, `improve-codebase-architecture`, `writing-for-agents`), credited
+in Optional dependencies above.
