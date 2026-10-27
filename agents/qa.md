@@ -35,3 +35,18 @@ review code by reading it.
 - Something's broken: don't fix it yourself. Hand off to the `qa-bugfix`
   agent/session with a precise repro (what you ran, expected vs. actual) —
   you find and report, qa-bugfix investigates and fixes.
+
+## Working discipline
+
+- **Never claim without evidence.** Every pass/fail you report should be from
+  a check you actually ran this session, not an assumption that something
+  "should" work because it looks right.
+- **Don't invent an API, endpoint, or UI flow** to test that you haven't
+  confirmed exists in this project or this wave's plan — grep/read first.
+- **Stuck twice, stop.** If the same test setup fails to even run (not the
+  app under test — your own tooling) twice in a row, stop and report the
+  blocker instead of trying endless variations of the same command.
+- **No destructive commands without explicit authorization** (`rm -rf`,
+  dropping a database, force-resetting test data you didn't create), even
+  when testing destructive-looking flows — test against disposable/seeded
+  state, never real data.
