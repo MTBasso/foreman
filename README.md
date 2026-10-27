@@ -111,6 +111,21 @@ New to foreman? [`examples/sandbox`](examples/sandbox) walks through trying
 the whole flow once on a disposable empty project before pointing it at
 something real.
 
+## Updating
+
+```bash
+cd /path/to/foreman
+git pull origin main
+```
+
+That's enough to get the new files — the plugin was installed pointing
+straight at this folder, not a copy, so there's nothing to reinstall. For
+the change to actually take effect in a session: if you only touched
+docs/evals/non-loaded files (like this update), nothing else is needed.
+If you changed a **skill, command, or agent**, either start a **new**
+session, or run `/reload-plugins` in one that's already open — `claude
+plugin marketplace add`/`install` do not need to run again.
+
 ## Usage
 
 | Command | What it does |

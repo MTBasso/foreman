@@ -115,6 +115,21 @@ Novo por aqui? [`examples/sandbox`](examples/sandbox) (em inglês) mostra o
 fluxo inteiro rodando uma vez num projeto vazio e descartável, antes de usar
 num projeto de verdade.
 
+## Atualizando
+
+```bash
+cd /caminho/para/foreman
+git pull origin main
+```
+
+Isso já basta pra trazer os arquivos novos — o plugin foi instalado
+apontando direto pra essa pasta, não uma cópia, então não há nada pra
+reinstalar. Pra mudança valer de verdade dentro de uma sessão: se você só
+mexeu em documentação ou nos testes (como essa atualização), não precisa de
+mais nada. Se você mudou uma **skill, comando ou agente**, abra uma sessão
+**nova**, ou rode `/reload-plugins` numa sessão que já está aberta —
+`claude plugin marketplace add`/`install` não precisam rodar de novo.
+
 ## Uso
 
 | Comando | O que faz |
