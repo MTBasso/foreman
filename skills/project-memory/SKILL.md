@@ -1,6 +1,6 @@
 ---
 name: project-memory
-description: Reads and writes TECH_LEAD_MEMORY.md at the root of the current project, the per-project record of stack choices, conventions and decisions learned over time. Use this whenever the tech-lead skill needs to check prior decisions or record new ones.
+description: Reads and writes FOREMAN_MEMORY.md at the root of the current project, the per-project record of stack choices, conventions and decisions learned over time. Use this whenever the foreman skill needs to check prior decisions or record new ones.
 ---
 
 # Project Memory
@@ -9,12 +9,12 @@ This plugin is installed globally and works the same way across every project, b
 each project has its own conventions. Those live in a single file, local to that
 repo, never in the plugin itself.
 
-## File: `TECH_LEAD_MEMORY.md` (repo root)
+## File: `FOREMAN_MEMORY.md` (repo root)
 
 Sections to maintain:
 
 ```markdown
-# Tech Lead Memory
+# Foreman Memory
 
 ## Project
 <one-line description of what this project is>
@@ -37,7 +37,7 @@ Sections to maintain:
 
 - If the file doesn't exist, create it the first time any decision is made — don't
   create an empty file speculatively.
-- Before asking the user a question the tech-lead skill would normally ask (stack,
+- Before asking the user a question the foreman skill would normally ask (stack,
   pattern, architecture), check this file first. If it's already answered, reuse
   the answer and only re-ask if the new feature plausibly needs a different
   choice.

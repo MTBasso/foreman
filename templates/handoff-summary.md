@@ -1,5 +1,5 @@
 <!--
-Fixed status-line format the tech-lead skill posts right before spawning a
+Fixed status-line format the foreman skill posts right before spawning a
 delegate, and again right after it reports back. Same shape every time, so
 you can skim status without re-reading context.
 -->

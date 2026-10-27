@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # PreToolUse guardrail: while any orchestrator skill from this plugin
-# (tech-lead, plan-runner, release-manager...) has marked itself active via
-# the .orchestrator-active marker it writes/removes at the project root,
-# deny Write/Edit/NotebookEdit outright instead of trusting the prompt alone.
+# (foreman, plan-runner...) has marked itself active via the
+# .orchestrator-active marker it writes/removes at the project root, deny
+# Write/Edit/NotebookEdit outright instead of trusting the prompt alone.
 set -euo pipefail
 
 input="$(cat)"
@@ -15,7 +15,7 @@ if [[ -f "$marker" ]]; then
 
   # Orchestration bookkeeping, not implementation: let the orchestrator write
   # its own memory file without having to toggle the marker off and on.
-  if [[ "$(basename -- "$file_path")" == "TECH_LEAD_MEMORY.md" ]]; then
+  if [[ "$(basename -- "$file_path")" == "FOREMAN_MEMORY.md" ]]; then
     echo '{}'
     exit 0
   fi

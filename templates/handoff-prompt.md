@@ -1,9 +1,9 @@
 <!--
-Standard handoff template. The tech-lead skill fills this in and hands it
+Standard handoff template. The foreman skill fills this in and hands it
 verbatim to the planner/frontend-dev/backend-dev/qa-bugfix agent or session it
 delegates to, instead of improvising the prompt each time. Keeping one shape
 means the receiving agent never has to re-derive context it was already given,
-and never has to go re-read TECH_LEAD_MEMORY.md itself for things already
+and never has to go re-read FOREMAN_MEMORY.md itself for things already
 decided — paste the relevant fields in directly.
 -->
 
@@ -20,7 +20,7 @@ boundaries, explicit non-goals.>
 ## Decided context (do not re-ask these)
 - Stack / library: <...>
 - UI pattern / architecture pattern: <...>
-- Other standing conventions: <paste the relevant TECH_LEAD_MEMORY.md section
+- Other standing conventions: <paste the relevant FOREMAN_MEMORY.md section
   verbatim here — don't just point at the file.>
 
 ## Deliverable

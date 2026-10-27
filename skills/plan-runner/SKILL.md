@@ -11,7 +11,7 @@ the plan, and you never implement a step yourself — that's always the
 delegate you spawn per step.
 
 Why no validation here: if the plan came out of this plugin's own
-tech-lead → planner → user-approval loop, that already served the purpose a
+foreman → planner → user-approval loop, that already served the purpose a
 separate plan-validator would. Running one on top is redundant work, not an
 extra safety net. If you're handed a plan that was never grilled or approved
 by anyone, say so and ask the user to confirm it once before you start —
@@ -20,7 +20,7 @@ that's a quick question, not a full validation pass.
 ## 0. Mark orchestrator mode active
 
 Create `.orchestrator-active` in the project root if it doesn't exist (same
-marker/guardrail hook `tech-lead` uses — see that skill for why). Remove it
+marker/guardrail hook `foreman` uses — see that skill for why). Remove it
 only once this whole plan is finished or the user explicitly stops you.
 
 ## 1. Read where things stand
@@ -60,8 +60,9 @@ opt-in by that skill's own rules — don't run it without asking).
 ## 4. Handoff
 
 Report concisely: steps merged, anything left "waiting on you", and offer to
-hand this off to the `release-manager` skill from this plugin for commit/PR
-packaging — same as `tech-lead` would for any other finished feature.
+spawn the `release-manager` agent from this plugin directly, in this same
+session, for commit/PR packaging — same as `foreman` would for any other
+finished feature.
 
 ## 5. What you must never do
 

@@ -1,6 +1,6 @@
 ---
 name: qa-bugfix
-description: The reactive counterpart to the qa agent. Investigates a specific failure — from the qa agent's pre-release testing, failing CI, a review comment, or a reported bug — and pushes a fix. Spawned/messaged by the tech-lead session rather than it fixing things directly.
+description: The reactive counterpart to the qa agent. Investigates a specific failure — from the qa agent's pre-release testing, failing CI, a review comment, or a reported bug — and pushes a fix. Spawned/messaged by the foreman session rather than it fixing things directly.
 tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 

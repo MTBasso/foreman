@@ -1,6 +1,6 @@
 ---
 name: design-preview
-description: Builds a real, interactive HTML preview of a UI/design-system option, using the actual styling library loaded live (not a text description), so the user can pick between options by seeing the real result. Use whenever the tech-lead skill needs to offer UI/design choices.
+description: Builds a real, interactive HTML preview of a UI/design-system option, using the actual styling library loaded live (not a text description), so the user can pick between options by seeing the real result. Use whenever the foreman skill needs to offer UI/design choices.
 ---
 
 # Design Preview
@@ -35,5 +35,5 @@ preview is visually faithful even though the literal shadcn package isn't runnin
   realistic placeholder content for this specific project — not generic Lorem
   Ipsum.
 - Let the user pick by reacting to what they see, not by naming a library in text.
-- Once chosen, record the pick (library + pattern) so the tech-lead skill can write
+- Once chosen, record the pick (library + pattern) so the foreman skill can write
   it into the project's memory file and pass it on to the frontend agent verbatim.

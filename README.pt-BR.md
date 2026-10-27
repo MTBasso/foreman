@@ -23,72 +23,75 @@ texto do prompt.
 
 ```mermaid
 flowchart TD
-    U([Você]) <--> TL[["🧑‍💼 tech-lead\n(orquestrador)"]]
+    U([Você]) <--> FM[["🧑‍💼 foreman\n(orquestrador — uma sessão só)"]]
 
-    TL -- "faz o grilling da ideia" --> GM["grill-me\n(opcional, mattpocock/skills)"]
-    TL -- "código já existente?" --> AUDIT["improve-codebase-architecture\n+ writing-for-agents\n(opcional, só se precisar)"]
+    FM -- "faz o grilling da ideia" --> GM["grill-me\n(opcional, mattpocock/skills)"]
+    FM -- "código já existente?" --> AUDIT["improve-codebase-architecture\n+ writing-for-agents\n(opcional, só se precisar)"]
 
-    TL -- "① plano" --> PL["planner"]
-    PL -- "plano de volta p/ aprovação" --> TL
+    FM -- "① plano" --> PL["planner"]
+    PL -- "plano de volta p/ aprovação" --> FM
 
-    TL -- "② construção" --> FE["frontend-dev"]
-    TL -- "② construção" --> BE["backend-dev"]
+    FM -- "② construção" --> FE["frontend-dev"]
+    FM -- "② construção" --> BE["backend-dev"]
     FE -. "auditoria impeccable" .-> FE
 
-    TL -- "③ teste" --> QA["qa\n(testes reais de UI + API)"]
+    FM -- "③ teste" --> QA["qa\n(testes reais de UI + API)"]
     QA -- "achou um bug" --> QB["qa-bugfix"]
     QB -- "corrigido" --> QA
-    QA -- "tudo verde" --> TL
+    QA -- "tudo verde" --> FM
 
-    TL -- "④ entrega" --> RM[["📦 release-manager\n(orquestrador)"]]
+    FM -- "④ entrega, mesma sessão" --> RM["📦 release-manager"]
     RM --> SHIP(["commits limpos\n+ PR"])
 
-    PR[["📋 plan-runner\n(orquestrador)"]] -- "aciona um delegado\npor passo do plano" --> PSB["plan-step-builder"]
+    PR[["📋 plan-runner\n(orquestrador — ponto de entrada separado)"]] -- "aciona um delegado\npor passo do plano" --> PSB["plan-step-builder"]
     PSB -- "segue a própria skill\nbuild-plan do repositório" --> SHIP2(["passos mesclados\n+ verify-change"])
     U <--> PR
 
-    style TL fill:#2d5aa0,color:#fff
-    style RM fill:#2d5aa0,color:#fff
+    style FM fill:#2d5aa0,color:#fff
     style PR fill:#2d5aa0,color:#fff
 ```
 
-Três skills orquestradoras, cada uma sua própria sessão, cada uma delegando
-em vez de implementar:
+O `foreman` é a única sessão que você abre pra ir da ideia até o PR
+lançado — ele faz o grilling, planeja, constrói, testa e lança, tudo
+delegando pra agentes dentro da mesma sessão, nunca abrindo uma segunda
+sessão própria. O `plan-runner` é um ponto de entrada separado, pra quando
+um plano já existe e já foi aprovado (vindo do `foreman`, ou escrito à mão)
+e você só quer que ele seja executado, passo a passo, sem precisar abrir
+uma sessão completa de `foreman` pra isso:
 
 | Skill | Papel | Nunca faz |
 |---|---|---|
-| `tech-lead` | Faz o grilling de uma feature/bug nova com você, reúne contexto, delega planejamento → construção → teste | Editar código, escrever o plano, decidir que terminou sem o `qa` confirmar |
+| `foreman` | Faz o grilling de uma feature/bug nova com você, reúne contexto, delega planejamento → construção → teste → lançamento, tudo numa sessão só | Editar código, escrever o plano, decidir que terminou sem o `qa` confirmar |
 | `plan-runner` | Executa um plano *já aprovado*, passo a passo, em repositórios que já têm suas próprias ferramentas de plano/build | Construir um passo sozinho, pular um passo marcado como "esperando você" |
-| `release-manager` | Empacota as ondas terminadas em commits limpos e um PR | Implementar features, corrigir bugs |
 
 ## Um passo a passo
 
 ```mermaid
 sequenceDiagram
     participant Você
-    participant TL as tech-lead
+    participant FM as foreman
     participant PL as planner
     participant FE as frontend-dev
     participant QA as qa
     participant RM as release-manager
 
-    Você->>TL: "quero uma UI de calculadora"
-    Note over TL: marca .orchestrator-active<br/>(hook passa a bloquear edições do próprio TL)
-    TL->>Você: faz o grilling de escopo, biblioteca, padrão de UI
-    Você->>TL: "Tailwind, sem dashboard, só a calculadora"
-    TL->>PL: handoff-prompt.md (briefing grillado + decisões)
-    PL->>TL: plano de implementação
-    TL->>Você: "[PENDING] planner → plano pronto, aqui está"
-    Você->>TL: aprova
-    TL->>FE: handoff-prompt.md (plano + stack)
+    Você->>FM: "quero uma UI de calculadora"
+    Note over FM: marca .orchestrator-active<br/>(hook passa a bloquear edições do próprio FM)
+    FM->>Você: faz o grilling de escopo, biblioteca, padrão de UI
+    Você->>FM: "Tailwind, sem dashboard, só a calculadora"
+    FM->>PL: handoff-prompt.md (briefing grillado + decisões)
+    PL->>FM: plano de implementação
+    FM->>Você: "[PENDING] planner → plano pronto, aqui está"
+    Você->>FM: aprova
+    FM->>FE: handoff-prompt.md (plano + stack)
     FE->>FE: constrói, roda a auditoria impeccable
-    FE->>TL: "[DONE] calculadora construída, estilizada"
-    TL->>QA: roda testes reais antes do lançamento
-    QA->>TL: "[DONE] só UI, sem backend, tudo verde"
-    TL->>Você: release-handoff-prompt.md, pronto pro /release-manager
-    Você->>RM: /release-manager (cola o handoff)
+    FE->>FM: "[DONE] calculadora construída, estilizada"
+    FM->>QA: roda testes reais antes do lançamento
+    QA->>FM: "[DONE] só UI, sem backend, tudo verde"
+    FM->>RM: release-handoff-prompt.md (mesma sessão, sem handoff manual)
     RM->>RM: organiza commits, escreve a descrição do PR
-    RM->>Você: "PR pronto pra revisão"
+    RM->>FM: "[DONE] PR pronto pra revisão"
+    FM->>Você: "PR pronto pra revisão" (link)
 ```
 
 ## Instalação
@@ -105,19 +108,22 @@ Depois abra uma sessão **nova** (as skills do plugin carregam no início da
 sessão) e rode:
 
 ```
-/tech-lead
+/foreman
 ```
 
 ## Uso
 
 | Comando | O que faz |
 |---|---|
-| `/tech-lead [tópico]` | Transforma esta sessão no orquestrador tech-lead |
-| `/tech-lead-status` | Mostra se o modo tech-lead está ativo e as decisões já registradas do projeto |
+| `/foreman [tópico]` | Transforma esta sessão no orquestrador foreman |
+| `/foreman-status` | Mostra se o modo foreman está ativo e as decisões já registradas do projeto |
 | `/plan-runner <plano>` | Executa um `docs/plans/<plano>.md` já aprovado, do início ao fim |
-| `/release-manager` | Transforma esta sessão no release manager, pra empacotar o trabalho terminado |
 
-O `tech-lead` também instala sozinho suas dependências opcionais na primeira
+Não existe comando `/release-manager` — ele é um sub-agente que o próprio
+`foreman` aciona sozinho, assim que as ondas de uma feature terminam, na
+mesma sessão, não uma sessão que você abre diretamente.
+
+O `foreman` também instala sozinho suas dependências opcionais na primeira
 vez que roda (veja abaixo) — nada pra configurar à mão.
 
 ## O guardrail, não só um pedido no prompt
@@ -125,7 +131,7 @@ vez que roda (veja abaixo) — nada pra configurar à mão.
 Enquanto qualquer skill orquestradora estiver ativa (o arquivo
 `.orchestrator-active` existe na raiz do projeto), um hook `PreToolUse` nega
 `Write`/`Edit`/`NotebookEdit` de cara — a única exceção é a própria
-anotação de bookkeeping do `TECH_LEAD_MEMORY.md`. "O orquestrador nunca toca
+anotação de bookkeeping do `FOREMAN_MEMORY.md`. "O orquestrador nunca toca
 em código" é reforçado no nível da ferramenta, não deixado só por conta do
 modelo lembrar da regra.
 
@@ -141,24 +147,23 @@ rodar um comando destrutivo sem autorização explícita.
 ## Conteúdo
 
 **Skills**
-- `skills/tech-lead` — o ponto de entrada principal (veja acima).
+- `skills/foreman` — o ponto de entrada principal (veja acima).
 - `skills/plan-runner` — pra repositórios que já têm suas próprias
   ferramentas de plano/passo de build (ex: uma configuração de
   `build-plan`/`plan-status`/`verify-change`). Pula de propósito a
-  revalidação do plano — isso já é feito pelo próprio grilling do tech-lead
+  revalidação do plano — isso já é feito pelo próprio grilling do foreman
   e pela sua aprovação.
-- `skills/release-manager` — empacota ondas terminadas em commits + um PR.
 - `skills/design-preview` — renderiza previews reais de HTML, com a
   biblioteca de verdade carregada, pra opções de UI serem escolhidas
   olhando, não lendo descrição.
-- `skills/project-memory` — lê e escreve o `TECH_LEAD_MEMORY.md`, o
+- `skills/project-memory` — lê e escreve o `FOREMAN_MEMORY.md`, o
   registro por projeto de escolhas de stack, convenções e decisões,
   incluindo o raciocínio por trás de cada uma.
 
 **Agentes** (acionados pelos orquestradores, nunca diretamente por você)
 - `agents/planner.md` — transforma um briefing grillado num plano. Sem código.
 - `agents/frontend-dev.md` / `agents/backend-dev.md` — constroem seguindo o
-  plano e a stack já decididos no `TECH_LEAD_MEMORY.md`.
+  plano e a stack já decididos no `FOREMAN_MEMORY.md`.
 - `agents/qa.md` — roda testes reais de UI/API proativamente antes de
   qualquer entrega de release. Encontra problemas, nunca os corrige.
 - `agents/qa-bugfix.md` — a contraparte reativa: corrige uma falha
@@ -166,9 +171,12 @@ rodar um comando destrutivo sem autorização explícita.
   revisão.
 - `agents/plan-step-builder.md` — constrói e mescla um passo do
   `plan-runner`, seguindo a própria skill `build-plan` do repositório alvo.
+- `agents/release-manager.md` — empacota ondas terminadas em commits limpos
+  e um PR. Acionado pelo `foreman` diretamente, na mesma sessão, assim que
+  as ondas de uma feature terminam. Nunca implementa feature nem corrige bug.
 
-**Comandos**: `/tech-lead`, `/tech-lead-status`, `/plan-runner`,
-`/release-manager` — atalhos de entrada pras skills acima.
+**Comandos**: `/foreman`, `/foreman-status`, `/plan-runner` — atalhos de
+entrada pras skills acima.
 
 **Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
 o guardrail descrito acima.
@@ -179,7 +187,7 @@ o guardrail descrito acima.
   pelo agente que recebe.
 - `templates/handoff-summary.md` — o formato de linha de status
   `[PENDING]`/`[DONE]`/`[BLOCKED]` postado antes e depois de cada delegação.
-- `templates/release-handoff-prompt.md` — o que o `tech-lead` entrega ao
+- `templates/release-handoff-prompt.md` — o que o `foreman` entrega ao
   `release-manager` assim que as ondas de uma feature terminam.
 
 **Evals**: `claude plugin eval .` roda verificações de regressão
@@ -189,10 +197,10 @@ só pedir educadamente.
 
 ## Dependências opcionais
 
-Quatro skills, de dois marketplaces diferentes, que o `tech-lead` usa quando
+Quatro skills, de dois marketplaces diferentes, que o `foreman` usa quando
 estão instaladas e cai no próprio julgamento quando não estão — nada quebra
 de qualquer jeito, você só perde a abordagem específica daquela skill. O
-`tech-lead` instala elas sozinho na primeira vez que roda, se estiverem
+`foreman` instala elas sozinho na primeira vez que roda, se estiverem
 faltando:
 
 ```bash
