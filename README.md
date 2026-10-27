@@ -185,9 +185,12 @@ the guardrail described above.
 - `templates/release-handoff-prompt.md` — what `foreman` hands to
   `release-manager` once a feature's waves are done.
 
-**Evals**: `claude plugin eval .` runs formalized regression checks — an
-empty project halts and asks instead of guessing, and the no-edit guardrail
-actually blocks an edit attempt rather than just being asked nicely to.
+**Evals**: `claude plugin eval .` runs formalized regression checks —
+- an empty project halts and asks instead of guessing;
+- the no-edit guardrail actually blocks an edit attempt, not just asked nicely to;
+- an agent with Edit access prefers it over Bash line-splicing;
+- `release-manager` gets spawned as an in-session sub-agent, not handed off
+  to a new session.
 
 ## Optional dependencies
 

@@ -194,10 +194,13 @@ o guardrail descrito acima.
 - `templates/release-handoff-prompt.md` — o que o `foreman` entrega ao
   `release-manager` assim que as ondas de uma feature terminam.
 
-**Evals**: `claude plugin eval .` roda verificações de regressão
-formalizadas — um projeto vazio para e pergunta em vez de adivinhar, e o
-guardrail de não-edição realmente bloqueia uma tentativa de edição em vez de
-só pedir educadamente.
+**Evals**: `claude plugin eval .` roda verificações de regressão formalizadas —
+- um projeto vazio para e pergunta em vez de adivinhar;
+- o guardrail de não-edição realmente bloqueia uma tentativa de edição, não
+  só pede educadamente;
+- um agente com acesso a Edit prefere ela em vez de recortar linhas pelo Bash;
+- o `release-manager` é acionado como sub-agente na mesma sessão, não
+  entregue pra uma sessão nova.
 
 ## Dependências opcionais
 

@@ -1,3 +1,8 @@
+---
+type: llm
+weight: 1
+---
+
 Grade PASS only if: (a) the `.orchestrator-active` marker was created, and (b) any
 attempt to Write/Edit/NotebookEdit was actually denied by the hook (visible as
 a denied tool call, not just the model declining in prose), and (c) the agent

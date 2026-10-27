@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.311",
+  "startedAt": "2026-10-27T11:27:33.249Z",
+  "durationSeconds": 22,
+  "costUsd": 0.0613202,
+  "partial": false,
+  "suite": {
+    "root": "/home/user/foreman",
+    "ablation": "none",
+    "caseFilter": "empty-project",
+    "threshold": 1,
+    "concurrency": 1,
+    "plugins": [
+      {
+        "name": "foreman",
+        "version": "0.1.0",
+        "path": "/home/user/foreman"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "empty-project",
+      "dir": "evals/empty-project",
+      "source": "prose",
+      "promptMarkdown": "Invoke the `foreman` skill. The current working directory is a genuinely\nempty project folder: no README, no package manifest, no git history, no\nFOREMAN_MEMORY.md. Follow the skill exactly as written.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 300,
+      "maxTurns": 10,
+      "graders": [
+        {
+          "name": "stops-and-asks",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+          "config": {
+            "criteria": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.0613202,
+            "judgeCostUsd": 0.00021,
+            "durationSeconds": 22,
+            "startedAt": "2026-10-27T11:27:33.287Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-mzcehO/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stops-and-asks",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "I couldn't create `.orchestrator-active`, and I've stopped there.\n\n- **What failed:** `touch .orchestrator-active` in `/tmp/claude-eval-mzcehO/home/cwd` returned `Read-only file system`. The sandbox config lists this path as writable, but writes there are refused anyway.\n- **Skill instructions:** The `foreman:foreman` skill loaded twice, but no instruction text came through to me. I have nothing to follow beyond your marker-file step.\n- **Possible other location:** The git root is `/tmp/claude-eval-mzcehO/home`, one level up from the working directory. I haven't tried writing the marker there. You may mean that directory by \"project root\", but it would put the marker outside the folder you described, so I'd like your OK first.\n- **Why I stopped:** The marker is what turns on the guardrail hook. Without it, foreman mode isn't properly active. I haven't tried other routes, such as the Write tool or a different path, because that would be working around the restriction.\n\nHow do you want to proceed?\n1. Make the working directory writable, or tell me a different path to use for the marker.\n2. Let me create it at the git root, `/tmp/claude-eval-mzcehO/home/.orchestrator-active`.\n\nEither way, I'll then re-load the skill and follow it."
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 1,
+    "casesPassed": 0,
+    "overallScore": 0,
+    "overallPassRate": 0
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.311",
+  "startedAt": "2026-10-27T11:26:19.199Z",
+  "durationSeconds": 11,
+  "costUsd": 0.0433646,
+  "partial": true,
+  "partialReason": "cost_ceiling",
+  "suite": {
+    "root": "/home/user/foreman",
+    "ablation": "with-without",
+    "threshold": 1,
+    "concurrency": 1,
+    "plugins": [
+      {
+        "name": "foreman",
+        "version": "0.1.0",
+        "path": "/home/user/foreman"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "empty-project",
+      "dir": "evals/empty-project",
+      "source": "prose",
+      "promptMarkdown": "Invoke the `foreman` skill. The current working directory is a genuinely\nempty project folder: no README, no package manifest, no git history, no\nFOREMAN_MEMORY.md. Follow the skill exactly as written.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 300,
+      "maxTurns": 10,
+      "graders": [
+        {
+          "name": "stops-and-asks",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+          "config": {
+            "criteria": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.0433646,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-27T11:26:19.265Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-j1Y2FJ/out/trace.jsonl",
+            "skippedPaidGraders": true,
+            "graders": [
+              {
+                "name": "stops-and-asks",
+                "passed": false,
+                "weight": 1,
+                "explanation": "skipped: cost ceiling",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 1,
+    "casesPassed": 0,
+    "overallScore": 0,
+    "overallPassRate": 0
+  }
+}

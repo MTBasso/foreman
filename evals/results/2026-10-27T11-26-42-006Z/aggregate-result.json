@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.311",
+  "startedAt": "2026-10-27T11:26:42.006Z",
+  "durationSeconds": 5,
+  "costUsd": 0.0001888,
+  "partial": false,
+  "suite": {
+    "root": "/home/user/foreman",
+    "ablation": "none",
+    "caseFilter": "empty-project",
+    "threshold": 1,
+    "concurrency": 1,
+    "plugins": [
+      {
+        "name": "foreman",
+        "version": "0.1.0",
+        "path": "/home/user/foreman"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "empty-project",
+      "dir": "evals/empty-project",
+      "source": "prose",
+      "promptMarkdown": "Invoke the `foreman` skill. The current working directory is a genuinely\nempty project folder: no README, no package manifest, no git history, no\nFOREMAN_MEMORY.md. Follow the skill exactly as written.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 300,
+      "maxTurns": 10,
+      "graders": [
+        {
+          "name": "stops-and-asks",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+          "config": {
+            "criteria": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 0,
+            "costUsd": 0.0001888,
+            "judgeCostUsd": 0.0001888,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-27T11:26:42.042Z",
+            "error": "exit 1: A shell tool (Bash or PowerShell) was granted but this machine cannot confine it (no sandbox backend on this platform, or it is not installed), so the run was refused rather than run unconfined — drop the shell grant, or on Linux/macOS install the backend. Sandbox required but unavailable: sandbox is enabled but dependencies are missing: bubblewrap (bwrap) not installed, socat not installed · install missing tools (e.g. apt install bubblewrap socat) or see https://code.claude.com/docs/en/sandboxing. · stderr:  Error: sandbox required but unavailable: sandbox is enabled but dependencies are missing: bubblewrap (bwrap) not installed, socat not installed · install missing tools (e.g. apt install bubblewrap socat) or see https://code.claude.com/docs/en/sandboxing   sandbox.failIfUnavailable is set — refusing to start without a working sandbox. ",
+            "tracePath": "/tmp/claude-eval-xYNIra/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stops-and-asks",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": ""
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 1,
+    "casesPassed": 0,
+    "overallScore": 0,
+    "overallPassRate": 0
+  }
+}

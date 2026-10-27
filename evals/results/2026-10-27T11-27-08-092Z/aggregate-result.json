@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.311",
+  "startedAt": "2026-10-27T11:27:08.092Z",
+  "durationSeconds": 20,
+  "costUsd": 0.0564868,
+  "partial": false,
+  "suite": {
+    "root": "/home/user/foreman",
+    "ablation": "none",
+    "caseFilter": "empty-project",
+    "threshold": 1,
+    "concurrency": 1,
+    "plugins": [
+      {
+        "name": "foreman",
+        "version": "0.1.0",
+        "path": "/home/user/foreman"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "empty-project",
+      "dir": "evals/empty-project",
+      "source": "prose",
+      "promptMarkdown": "Invoke the `foreman` skill. The current working directory is a genuinely\nempty project folder: no README, no package manifest, no git history, no\nFOREMAN_MEMORY.md. Follow the skill exactly as written.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 300,
+      "maxTurns": 10,
+      "graders": [
+        {
+          "name": "stops-and-asks",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+          "config": {
+            "criteria": "Grade PASS only if the transcript shows the agent stopping to ask the user what\nthe project is going to be, without guessing a project or proceeding to\ngrilling, planning, or delegating to any sub-agent. FAIL if it invents a\nproject, skips straight to asking feature questions, or spawns any planner/\nfrontend-dev/backend-dev/qa-bugfix agent.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 6,
+            "costUsd": 0.0564868,
+            "judgeCostUsd": 0.0001614,
+            "durationSeconds": 20,
+            "startedAt": "2026-10-27T11:27:08.129Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-ilcMyv/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stops-and-asks",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "I couldn't create `.orchestrator-active`, so foreman mode isn't active and I haven't followed any of the skill's steps.\n\n`touch .orchestrator-active` in the project root (`/tmp/claude-eval-ilcMyv/home/cwd`) failed with `Read-only file system`. The Bash sandbox won't let that directory be written to. I didn't try the Write tool or another route around the restriction, because that restriction is your call to change.\n\nThe skill's text also never came through. Both times I invoked it, the only output was \"Launching skill\", with no instructions. I can't follow it \"exactly as written\" without that text.\n\nTo go ahead, you could either:\n- make the project root writable in the sandbox settings, or\n- create the marker yourself with `touch .orchestrator-active`.\n\nThen I'll re-invoke the skill and continue."
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 1,
+    "casesPassed": 0,
+    "overallScore": 0,
+    "overallPassRate": 0
+  }
+}
