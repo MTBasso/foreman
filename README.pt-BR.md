@@ -111,6 +111,10 @@ sessão) e rode:
 /foreman
 ```
 
+Novo por aqui? [`examples/sandbox`](examples/sandbox) (em inglês) mostra o
+fluxo inteiro rodando uma vez num projeto vazio e descartável, antes de usar
+num projeto de verdade.
+
 ## Uso
 
 | Comando | O que faz |
@@ -220,6 +224,37 @@ claude plugin install impeccable@impeccable
 - `impeccable` (de Paul Bakaus, não de Matt Pocock) — audita e corrige
   estilização genérica de "AI slop". O `frontend-dev` roda em tudo que
   constrói; o `qa` também roda em UI mais antiga, anterior a esse fluxo.
+
+## Problemas comuns
+
+**Uma skill/comando não aparece logo depois de instalar.** As skills do
+plugin carregam no início da sessão. Termine a instalação/atualização e
+abra uma sessão de verdade **nova** — não continue usando a mesma de onde
+você rodou `claude plugin install`.
+
+**Não sei se o modo foreman está realmente ativo.** Rode `/foreman-status`
+— ele mostra se o `.orchestrator-active` existe e o `FOREMAN_MEMORY.md`
+atual, sem você precisar adivinhar ou abrir o arquivo.
+
+**Uma edição foi negada e você acha que não deveria.** Isso é o hook de
+guardrail, não um erro. Veja "If the no-edit guardrail blocks something it
+shouldn't" em `skills/foreman/SKILL.md` — resumindo: provavelmente é o
+bloqueio de delegação funcionando como deveria, mas se for mesmo um falso
+positivo, o certo é ampliar a lista do
+`hooks/block-edit-during-orchestrator.sh`, não contornar caso a caso.
+
+**Não sei o id exato do plugin do `impeccable`.** O nome dele no
+marketplace pode ser diferente de `pbakaus/impeccable`, o nome do
+repositório. Depois de `claude plugin marketplace add pbakaus/impeccable`,
+rode `claude plugin list` e instale o id que realmente apareceu.
+
+**Uma dependência opcional (`grill-me`, `impeccable`, etc.) falhou ao
+instalar.** O `foreman` tenta uma vez, avisa, e segue sem ela naquele
+passo — nada trava. Instale depois com os comandos de Dependências
+opcionais, sem precisar reiniciar nada.
+
+**Quer testar sem arriscar um projeto de verdade.** Veja
+[`examples/sandbox`](examples/sandbox).
 
 ## Agradecimentos
 

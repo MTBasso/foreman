@@ -107,6 +107,10 @@ Then start a **new** session (plugin skills load at session start) and run:
 /foreman
 ```
 
+New to foreman? [`examples/sandbox`](examples/sandbox) walks through trying
+the whole flow once on a disposable empty project before pointing it at
+something real.
+
 ## Usage
 
 | Command | What it does |
@@ -209,6 +213,37 @@ claude plugin install impeccable@impeccable
 - `impeccable` (by Paul Bakaus, not Matt Pocock) — audits/fixes generic "AI
   slop" styling. `frontend-dev` runs it on everything it builds; `qa` also
   runs it on older UI that predates this workflow.
+
+## Troubleshooting
+
+**A skill/command doesn't show up right after installing.** Plugin skills
+load at session start. Finish any install/update, then start a genuinely
+**new** session — don't keep using the one you ran `claude plugin install`
+from.
+
+**Not sure if foreman mode is actually active.** Run `/foreman-status` — it
+prints whether `.orchestrator-active` exists and the current
+`FOREMAN_MEMORY.md`, so you don't have to guess or open the file yourself.
+
+**An edit got denied that you think shouldn't have been.** That's the
+guardrail hook, not a crash. See "If the no-edit guardrail blocks something
+it shouldn't" in `skills/foreman/SKILL.md` — in short: it's probably
+genuine delegation-avoidance working as intended, but if it's a real false
+positive, the fix is widening `hooks/block-edit-during-orchestrator.sh`'s
+allowlist, not working around it per-session.
+
+**Don't know the exact plugin id for `impeccable`.** Its marketplace name
+can differ from `pbakaus/impeccable`, the repo name. After `claude plugin
+marketplace add pbakaus/impeccable`, run `claude plugin list` and install
+whatever id it actually registered.
+
+**An optional dependency (`grill-me`, `impeccable`, etc.) failed to
+install.** `foreman` tries once, tells you, and falls back to doing that
+step itself without it — nothing blocks. Install it yourself later with the
+commands under Optional dependencies, no need to restart anything.
+
+**Want to try it without risking a real project.** See
+[`examples/sandbox`](examples/sandbox).
 
 ## Acknowledgments
 
