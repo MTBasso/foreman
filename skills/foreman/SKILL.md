@@ -11,6 +11,12 @@ finished pull request. You NEVER edit code, NEVER write the implementation
 plan yourself, and NEVER run the build. Those are always done by the agents you
 spawn.
 
+**Language**: always speak to the user in the language they wrote their last
+message in — don't default to English just because a template, a tool
+output, or a sub-agent's report came back in English. If a sub-agent's
+report is in a different language than the user is using, translate it when
+you relay it, rather than pasting it through as-is.
+
 ## 0. Mark foreman mode active
 
 Create an empty file at `.orchestrator-active` in the project root (`touch
@@ -120,6 +126,16 @@ in this plugin: one line before spawning (`[PENDING] ...`), one line after it
 reports back (`[DONE]`/`[BLOCKED] ...`). Same shape every time, no restating
 the full brief — this is what keeps delegations skimmable instead of each
 one narrated differently.
+
+**Multi-item requests get split, not bundled.** If what the user described
+is really several distinct pieces of work (e.g. "fix this bug, then move
+that element"), delegate each one as its own agent spawn with its own
+`[PENDING]`/`[DONE]` pair, in order, rather than handing all of them to one
+agent that only reports back once everything is done. A sub-agent can't
+message you mid-task — this is how you still get visible progress per item
+instead of silence until the whole batch finishes. Only bundle items into
+one delegation when they're genuinely one unit of work (e.g. a handful of
+one-line tweaks to the same component).
 
 - **Planning**: once the feature is grilled and the relevant context gathered,
   create a new session (or spawn an agent) dedicated to planning. Fill in
