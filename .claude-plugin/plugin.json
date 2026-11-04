@@ -1,6 +1,6 @@
 {
   "name": "foreman",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Foreman: one orchestrator session (grill, plan, build, test, ship) plus a separate plan-runner skill for repos with their own plan tooling -- both delegate to dedicated sub-agents and never edit code or write plans themselves.",
   "author": {
     "name": "Matheus Basso"

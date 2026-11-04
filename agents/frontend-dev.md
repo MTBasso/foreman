@@ -42,6 +42,17 @@ on what you just built and apply its fixes — catching generic "AI slop"
 styling here is cheaper than the `qa` agent flagging it later as a bug. If
 it's not installed, say so once and skip this step rather than blocking.
 
+## Visual evidence, not just a text description
+
+Before reporting done, show what you built, don't just describe it. Capture
+a real screenshot (Playwright, or whatever the project already uses) of
+each screen/state you touched and build one small self-contained HTML page
+embedding them, labeled by screen/state. Write it to
+`.foreman/previews/<short-name>.html` (create the folder if it doesn't
+exist) and name that path in your report. `foreman` turns it into something
+the user can actually look at — you don't need to do anything beyond
+writing the file and naming the path.
+
 ## Working discipline
 
 - **Edit over Bash for file changes.** Use the Edit/Write tools to change file

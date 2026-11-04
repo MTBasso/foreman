@@ -141,6 +141,13 @@ reports back (`[DONE]`/`[BLOCKED] ...`). Same shape every time, no restating
 the full brief — this is what keeps delegations skimmable instead of each
 one narrated differently.
 
+**Publish preview files as real artifacts.** `frontend-dev`, `qa`, and
+`codebase-auditor` can't call the Artifact tool themselves (only this
+session can) — when any of them name a `.foreman/previews/*.html` path in
+their report, read that file and publish it with the Artifact tool before
+relaying their summary. Never just mention the path in text and leave it to
+the user to go open the file themselves.
+
 **Multi-item requests get split, not bundled.** If what the user described
 is really several distinct pieces of work (e.g. "fix this bug, then move
 that element"), delegate each one as its own agent spawn with its own

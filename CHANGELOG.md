@@ -3,6 +3,18 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.4.0 — 2026-11-04
+
+- `frontend-dev`, `qa`, and `codebase-auditor` now back up anything visual
+  with a real preview instead of a text description: real screenshots (and,
+  for `codebase-auditor`'s proposed directions, an example built with the
+  project's own styling library) in a self-contained HTML page under
+  `.foreman/previews/*.html`.
+- `foreman` now reads any preview path a delegate names and publishes it
+  with the Artifact tool before relaying their report — sub-agents can't
+  call that tool themselves, only the orchestrating session can.
+- `qa` gained the `Write` tool, needed to write its preview pages.
+
 ## 0.3.0 — 2026-11-04
 
 - Added `agents/codebase-auditor.md`: reviews existing UI and older code on

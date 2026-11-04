@@ -218,8 +218,17 @@ and never run a destructive command without explicit authorization.
   use, plus a lighter pass for stale dependencies/deprecated patterns.
   Writes `FOREMAN_AUDIT.md`; never fixes anything itself.
 
-**Commands**: `/foreman`, `/foreman-status`, `/plan-runner` — fast entry
-points into the skills above.
+**Visual evidence, not just descriptions**: `frontend-dev`, `qa`, and
+`codebase-auditor` back up anything visual with a real preview — a
+self-contained HTML page with actual screenshots (and, for audit findings
+with a proposed direction, a real example built with the project's own
+styling library, not a mockup) — written to `.foreman/previews/*.html`.
+`foreman` reads it and publishes it as an Artifact before relaying their
+report, so you see it, not just a description of it. `design-preview`
+already did this directly since it runs in `foreman`'s own session.
+
+**Commands**: `/foreman`, `/foreman-status`, `/foreman-audit`,
+`/plan-runner` — fast entry points into the skills above.
 
 **Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
 the guardrail described above.

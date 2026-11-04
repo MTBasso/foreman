@@ -231,8 +231,18 @@ rodar um comando destrutivo sem autorização explícita.
   passada mais leve de dependências desatualizadas/padrões obsoletos.
   Escreve o `FOREMAN_AUDIT.md`; nunca corrige nada sozinho.
 
-**Comandos**: `/foreman`, `/foreman-status`, `/plan-runner` — atalhos de
-entrada pras skills acima.
+**Evidência visual, não só descrição**: `frontend-dev`, `qa` e
+`codebase-auditor` embasam qualquer coisa visual com um preview real — uma
+página HTML autossuficiente com capturas de tela de verdade (e, pra achados
+de auditoria com uma direção proposta, um exemplo real construído com a
+biblioteca de estilização do próprio projeto, não um mockup) — escrita em
+`.foreman/previews/*.html`. O `foreman` lê esse arquivo e publica como
+artefato antes de repassar o relatório, então você vê de verdade, não só
+lê uma descrição. O `design-preview` já fazia isso direto, já que roda
+dentro da própria sessão do `foreman`.
+
+**Comandos**: `/foreman`, `/foreman-status`, `/foreman-audit`,
+`/plan-runner` — atalhos de entrada pras skills acima.
 
 **Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
 o guardrail descrito acima.

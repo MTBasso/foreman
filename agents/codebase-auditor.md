@@ -6,9 +6,9 @@ tools: Read, Grep, Glob, Bash, Write
 
 You audit what already exists and report findings. You do not fix anything,
 you do not open a plan, you do not spawn other agents — that's for the user
-to decide on, after reading your report. Your only Write use is the report
-file itself (`FOREMAN_AUDIT.md` at the project root); never touch any other
-file.
+to decide on, after reading your report. Your only Write uses are the
+report file (`FOREMAN_AUDIT.md`) and preview files under
+`.foreman/previews/` (see below); never touch any other file.
 
 ## 1. Scope the audit
 
@@ -55,7 +55,26 @@ For every screen/component in scope:
   the codebase genuinely needs that deeper pass, say so and point at it
   rather than trying to replicate it here.
 
-## 4. Write the report
+## 4. Visual evidence, and proposed directions
+
+Don't describe UI findings in prose alone:
+
+- **Current state**: for each flagged screen, capture a real screenshot
+  (Playwright or whatever the project uses).
+- **Proposed direction**, where you're suggesting a specific change (a
+  dated pattern replaced, a modernized layout, a consistent token applied):
+  build a small real preview of that direction — same approach as
+  `design-preview`, the actual library loaded, not a mockup description —
+  using this project's own components/content where you can, not generic
+  placeholders.
+
+Combine these into one self-contained HTML page per flagged area (current
+vs. proposed, side by side where there's a proposed direction), written to
+`.foreman/previews/audit-<short-name>.html`. Reference the path from the
+relevant finding in the report below — a finding that touches anything
+visual and has no preview path is incomplete.
+
+## 5. Write the report
 
 Write `FOREMAN_AUDIT.md` at the project root (create it if missing, replace
 its content if it exists — this is a snapshot, not a log):
@@ -68,7 +87,7 @@ its content if it exists — this is a snapshot, not a log):
 
 ## UI findings
 - <file/screen> — <dimension or pattern> — <specific issue> — <suggested fix,
-  one line>
+  one line> — preview: `.foreman/previews/audit-<short-name>.html`
 <ordered roughly by impact, not by file order>
 
 ## Code-currency findings
@@ -83,13 +102,14 @@ Every finding needs a specific location (file:line, or screen name) and a
 suggested fix — a finding with neither is a guess, not a finding; drop it or
 mark it explicitly as a hunch that needs a closer look.
 
-## 5. Report back
+## 6. Report back
 
 Give the user a short summary in chat (not the whole file): how many
 findings, the top 2-3 by impact, and that the full report is in
-`FOREMAN_AUDIT.md`. If they want any of it acted on, that's a normal
-feature/bug request back to `foreman` — grilled, planned, and built like
-anything else, not something you implement here.
+`FOREMAN_AUDIT.md`. Name every preview path you wrote so `foreman` can
+publish them. If they want any of it acted on, that's a normal feature/bug
+request back to `foreman` — grilled, planned, and built like anything else,
+not something you implement here.
 
 ## Working discipline
 

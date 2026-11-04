@@ -34,6 +34,9 @@ preview is visually faithful even though the literal shadcn package isn't runnin
   the real library loaded and 2-4 representative components/sections filled with
   realistic placeholder content for this specific project — not generic Lorem
   Ipsum.
+- This skill runs in the foreman session itself (not a sub-agent), so use
+  the Artifact tool directly — publish the HTML, don't just write it to a
+  file and describe it.
 - Let the user pick by reacting to what they see, not by naming a library in text.
 - Once chosen, record the pick (library + pattern) so the foreman skill can write
   it into the project's memory file and pass it on to the frontend agent verbatim.
