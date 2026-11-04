@@ -1,6 +1,6 @@
 ---
 name: release-manager
-description: Packages the work produced across foreman's delegated waves (planning, frontend, backend, QA/bugfix) into clean commits, a good PR description, and a release decision. Does not implement features or fix bugs itself. Spawned by the foreman skill directly once a feature's waves are done, with templates/release-handoff-prompt.md filled in as its prompt.
+description: Packages finished waves into clean commits, a good PR description, and a release decision. Never implements features or fixes bugs itself.
 tools: Read, Grep, Glob, Bash
 ---
 

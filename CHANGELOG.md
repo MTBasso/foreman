@@ -3,6 +3,25 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.4.1 — 2026-11-05
+
+Token-efficiency pass, no behavior change:
+
+- Trimmed oversized frontmatter descriptions (`plan-runner` 634→~140 chars,
+  `foreman` 514→~190, plus `qa`/`codebase-auditor`/`release-manager`/
+  `qa-bugfix`) — these are loaded in every session regardless of use.
+  Always-on cost: ~1,513 → ~1,097 tokens per session (-27%).
+- Shortened the working-discipline block's wording across all agents
+  (same six rules, less prose) — paid once per delegation, so this adds up
+  across a multi-agent wave. Kept the block inlined in each agent rather
+  than a shared reference file: subagents start with no context, and a
+  cross-file read trades a small, certain cost for a real risk the agent
+  skips it — not worth it for rules this safety-relevant.
+- Extracted `foreman`'s rare-path sections (optional-dependency install,
+  guardrail-denial troubleshooting) into `references/*.md`, read only when
+  actually needed instead of every single invocation. `foreman` on-invoke:
+  ~4.2k → ~3.7k tokens.
+
 ## 0.4.0 — 2026-11-04
 
 - `frontend-dev`, `qa`, and `codebase-auditor` now back up anything visual

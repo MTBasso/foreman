@@ -233,6 +233,10 @@ already did this directly since it runs in `foreman`'s own session.
 **Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
 the guardrail described above.
 
+**References**: `references/*.md` — rare-path content (optional-dependency
+install, guardrail-denial troubleshooting) `foreman` reads on demand instead
+of carrying in its main body on every single invocation.
+
 **Templates**
 - `templates/handoff-prompt.md` — fixed shape for a delegation prompt, so
   decided context is pasted in directly instead of re-derived by the

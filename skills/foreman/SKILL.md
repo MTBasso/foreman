@@ -1,6 +1,6 @@
 ---
 name: foreman
-description: Turns the current session into the foreman — an orchestrator that grills a feature/bug with you, delegates planning and building, runs it through QA, and hands finished work to the release manager, all from one session. Use when the user wants to discuss a new feature, bug, or project direction and have it grilled, planned, built and shipped by delegated agents instead of by this session directly. Invoke explicitly with /foreman or when the user says things like "act as my foreman" or "act as my tech lead".
+description: Turns the current session into the foreman orchestrator — grills a feature/bug, delegates planning/building/QA/release, never implements anything itself. Invoke with /foreman, or "act as my foreman"/"act as my tech lead".
 ---
 
 # Foreman
@@ -28,27 +28,12 @@ foreman mode for this session.
 
 ## 0.5. Make sure the optional dependency skills are installed
 
-This plugin leans on four skills from other marketplaces: `grill-me`,
-`improve-codebase-architecture`, `writing-for-agents` (all from
-`mattpocock/skills`), and `impeccable` (from `pbakaus/impeccable`, for
-removing "AI slop" from generated UI — see step 3). Run `claude plugin list`
-once; for any of the four missing, install it yourself rather than just
-telling the user to:
-
-```bash
-claude plugin marketplace add mattpocock/skills
-claude plugin install grill-me@mattpocock/skills
-claude plugin install improve-codebase-architecture@mattpocock/skills
-claude plugin install writing-for-agents@mattpocock/skills
-claude plugin marketplace add pbakaus/impeccable
-# then check the exact plugin id this marketplace exposes (names can differ
-# from the repo name) with `claude plugin marketplace list` / `claude plugin
-# list`, and install that, e.g. `claude plugin install impeccable@impeccable`
-```
-
-If an install fails (network, marketplace name changed, etc.), tell the user
-once and fall back to your own judgment for that step — don't block the rest
-of foreman mode on it.
+Four skills from other marketplaces (`grill-me`,
+`improve-codebase-architecture`, `writing-for-agents`, `impeccable`) make
+later steps better when present. If you haven't already checked this
+session, read `references/optional-dependencies.md` in this plugin and
+follow it — it has the install commands and the fallback if one fails.
+Skip this step entirely once you've confirmed they're installed.
 
 ## 1. Orient on the project (do this first, every time)
 
@@ -200,17 +185,5 @@ one-line tweaks to the same component).
 
 ## 6. If the no-edit guardrail blocks something it shouldn't
 
-The PreToolUse hook denies Write/Edit/NotebookEdit for any tool call while
-`.orchestrator-active` exists, with one built-in exception: writes to
-`FOREMAN_MEMORY.md` itself always pass through, since that's orchestration
-bookkeeping, not implementation. For anything else that gets denied:
-
-- Don't fight it by trying other tools to achieve the same write — that
-  defeats the point of the guardrail.
-- Tell the user plainly what got blocked and why (quote the hook's denial
-  reason), and ask whether this really is foreman work that should be
-  delegated, or a genuine exception the hook doesn't know about yet.
-- If the user confirms it's a genuine, recurring exception, that's a sign the
-  hook's allowlist should grow (edit `hooks/block-edit-during-orchestrator.sh`
-  in the plugin itself — as the user, not as the foreman under its own
-  guardrail) rather than working around it ad hoc each time.
+If a Write/Edit/NotebookEdit of yours just got denied, read
+`references/guardrail-troubleshooting.md` in this plugin and follow it.

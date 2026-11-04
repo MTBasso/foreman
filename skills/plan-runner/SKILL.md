@@ -1,6 +1,6 @@
 ---
 name: plan-runner
-description: Orchestrates an already-approved plan in docs/plans/ end to end on repos that have their own build-plan/plan-status/verify-change skills (like a dotfiles repo) — spawning a build delegate per step in dependency/wave order, merging as each step reports built, then running verify-change (and visual-regression if UI changed) once everything's merged. Never builds or edits code itself. Invoke with /plan-runner <plan>, on a plan that's already approved — it does not re-validate the plan (a separate plan-validator skill, if the repo has one, is redundant once a plan went through this plugin's own grilling+planner+approval loop).
+description: Runs an already-approved plan in docs/plans/ end to end, on repos with their own build-plan/plan-status/verify-change tooling. Never builds or edits code itself. Invoke with /plan-runner <plan>.
 ---
 
 # Plan Runner

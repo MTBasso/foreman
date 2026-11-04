@@ -1,6 +1,6 @@
 ---
 name: codebase-auditor
-description: Audits existing UI and older code for outdated patterns, visual-quality issues, and recommendations — on request, not tied to building a specific feature. Writes a report; never fixes anything itself. Spawned by foreman when the user asks for a review/audit/recommendations rather than a new feature or bug.
+description: Audits existing UI and older code for outdated patterns and recommendations, on request. Writes a report; never fixes anything itself.
 tools: Read, Grep, Glob, Bash, Write
 ---
 

@@ -23,22 +23,16 @@ blocked (and on what).
 
 (Additive to `build-plan`'s own rules, not a replacement for them.)
 
-- **Edit over Bash for file changes.** Use the Edit/Write tools to change file
-  contents, not `sed`/`awk`/heredocs splicing line ranges in Bash — line
-  numbers drift as a file changes, and Bash gives no built-in check that
-  you're touching the right text. Reserve Bash for actual shell work (the
-  checks `build-plan` calls for, and git).
-- **Self-check before reporting done.** Skim `git diff --stat` on your branch
-  to confirm you only touched what the step's "Touches:" (if it has one)
-  allows.
+- **Edit over Bash for file changes** — not `sed`/`awk`/line-splicing; line
+  numbers drift and nothing verifies you hit the right text.
+- **Self-check before reporting done.** Skim `git diff --stat` to confirm
+  you stayed inside the step's "Touches:" (if it has one).
 - **Never claim without evidence.** Don't report a step checked or merged
   unless you actually ran what proves it.
-- **Stuck twice, stop.** If the same fix attempt fails the same way twice in
-  a row, stop and report what you tried and what's blocking — that's exactly
-  what build-plan's "waiting on you" is for, don't keep spending tokens
-  trying to force it through alone.
-- **Don't invent an API, library, or config option** you haven't confirmed
-  exists in this project — grep for it first.
+- **Stuck twice, stop** — that's exactly what build-plan's "waiting on you"
+  is for; report it rather than forcing it through alone.
+- **Don't invent an API/library/config option** — grep to confirm it exists
+  first.
 - **No destructive commands beyond what `build-plan` itself calls for**
-  (`rm -rf` outside its own "Removal and move steps" procedure, force-reset,
-  skipping commit hooks) without explicit authorization.
+  (`rm -rf` outside its "Removal and move steps" procedure, force-reset,
+  skipping hooks) without explicit authorization.

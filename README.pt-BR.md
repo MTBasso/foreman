@@ -247,6 +247,11 @@ dentro da própria sessão do `foreman`.
 **Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
 o guardrail descrito acima.
 
+**Referências**: `references/*.md` — conteúdo de caminho raro (instalação
+de dependência opcional, resolução de bloqueio do guardrail) que o
+`foreman` lê sob demanda, em vez de carregar no corpo principal toda vez
+que é chamado.
+
 **Templates**
 - `templates/handoff-prompt.md` — formato fixo de um prompt de delegação,
   pra contexto já decidido ser colado diretamente em vez de redescoberto
