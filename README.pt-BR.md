@@ -181,6 +181,15 @@ verdade, parar depois de duas tentativas falhas da mesma correção em vez de
 entrar em loop, não inventar uma API que nunca foi confirmada, e nunca
 rodar um comando destrutivo sem autorização explícita.
 
+Isso tudo é autoverificação — real, mas autorreportada. O `foreman` soma uma
+camada independente por cima: reverifica sozinho pelo menos uma das
+alegações de um delegado antes de repassar um relatório ou entregar pro
+`release-manager` (ele pode rodar Bash, o guardrail só bloqueia edição de
+arquivo), e quando aciona itens independentes em paralelo, roda `git diff
+--stat` sobre o resultado combinado depois, pra pegar um arquivo que dois
+delegados mexeram ao mesmo tempo — o tipo de conflito que o "tudo verde" de
+cada agente, sozinho, não revela.
+
 ## Conteúdo
 
 **Skills**

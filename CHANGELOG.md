@@ -3,6 +3,25 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.5.0 — 2026-11-05
+
+Independent verification, for work done unattended or in parallel:
+
+- `foreman` now spot-checks a delegate's claims before relaying them or
+  handing off to `release-manager` — independently re-runs at least one
+  check the delegate reported (test/build/lint, via Bash) instead of
+  trusting a self-reported "all green." The guardrail only blocks Write/
+  Edit/NotebookEdit, so foreman running read-only verification itself was
+  already possible, just not previously instructed.
+- Formalized parallel delegation (previously sequential-only): independent
+  items with no file-scope overlap can be spawned in parallel, but only
+  after confirming that from the plan, and `foreman` runs `git diff --stat`
+  over the combined changes afterward to catch a file two delegates both
+  claimed, rather than trusting each wave's individual report.
+- `release-manager` checks for cross-wave file overlap when the handoff
+  flags waves that ran in parallel; `templates/release-handoff-prompt.md`
+  now records which waves ran in parallel with which.
+
 ## 0.4.1 — 2026-11-05
 
 Token-efficiency pass, no behavior change:

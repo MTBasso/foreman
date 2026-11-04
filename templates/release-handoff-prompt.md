@@ -8,9 +8,11 @@ copy-paste into a new one.
 # Release handoff: <feature/change title>
 
 ## Waves completed
-- <role> — <one-line task> — [DONE|BLOCKED] <outcome>
-- <role> — <one-line task> — [DONE|BLOCKED] <outcome>
-<!-- one line per delegation, reuse the handoff-summary status lines as-is -->
+- <role> — <one-line task> — [DONE|BLOCKED] <outcome> — <sequential | parallel with: role(s)>
+- <role> — <one-line task> — [DONE|BLOCKED] <outcome> — <sequential | parallel with: role(s)>
+<!-- one line per delegation, reuse the handoff-summary status lines as-is;
+flag which ones ran in parallel so release-manager knows where to actually
+check for file overlap, not just trust each wave's own report -->
 
 ## Why (from FOREMAN_MEMORY.md)
 <paste the relevant decisions-log entries verbatim — the reasoning behind the

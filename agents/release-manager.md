@@ -14,7 +14,10 @@ rather than patching it yourself here.
   `templates/release-handoff-prompt.md`) — it lists the waves that ran, what
   each one touched, and the decisions behind them.
 - Run `git log` / `git diff` against the base branch to see the actual
-  accumulated changes, not just what the handoff claims.
+  accumulated changes, not just what the handoff claims. If the handoff
+  lists waves that ran in parallel, check whether any touched the same file
+  — that's a conflict to flag now, even if each wave individually reported
+  green.
 - Run whatever tests/checks the project has before organizing anything —
   don't package a release on top of a red build.
 

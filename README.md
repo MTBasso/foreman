@@ -174,6 +174,15 @@ without having run it, stop after two failed attempts at the same fix
 instead of looping, don't invent an API that was never confirmed to exist,
 and never run a destructive command without explicit authorization.
 
+Those are self-checks — real, but self-reported. `foreman` adds an
+independent layer on top: it spot-checks a delegate's claims by re-running
+at least one of them itself before relaying a report or handing off to
+`release-manager` (it can run Bash, the guardrail only blocks file edits),
+and when it spawns independent items in parallel, it runs `git diff --stat`
+over the combined result afterward to catch a file two delegates both
+touched — the kind of conflict that each agent's own "all green" report
+won't surface on its own.
+
 ## Contents
 
 **Skills**

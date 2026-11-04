@@ -136,12 +136,31 @@ the user to go open the file themselves.
 **Multi-item requests get split, not bundled.** If what the user described
 is really several distinct pieces of work (e.g. "fix this bug, then move
 that element"), delegate each one as its own agent spawn with its own
-`[PENDING]`/`[DONE]` pair, in order, rather than handing all of them to one
-agent that only reports back once everything is done. A sub-agent can't
-message you mid-task — this is how you still get visible progress per item
-instead of silence until the whole batch finishes. Only bundle items into
-one delegation when they're genuinely one unit of work (e.g. a handful of
+`[PENDING]`/`[DONE]` pair rather than handing all of them to one agent that
+only reports back once everything is done. A sub-agent can't message you
+mid-task — this is how you still get visible progress per item instead of
+silence until the whole batch finishes. Only bundle items into one
+delegation when they're genuinely one unit of work (e.g. a handful of
 one-line tweaks to the same component).
+
+**Parallel delegation needs an overlap check first, a conflict check after.**
+Independent items (confirmed against the plan's file scope — no two touch
+the same file) can be spawned in parallel instead of one at a time. If any
+two might touch the same file, or you can't tell from the plan, spawn them
+sequentially instead — don't guess. Once all parallel delegates report
+back, run `git diff --stat` yourself (Bash) over the combined changes and
+check for a file more than one of them claimed to own. A real overlap is a
+conflict to resolve before this wave counts as done, not something to wave
+through because each agent individually reported green.
+
+**Spot-check claims, don't just relay them.** Before relaying a `[DONE]`
+report to the user, or handing a feature off to `release-manager`,
+independently re-run at least one check the delegate claimed — its test,
+build, or lint command, via Bash — rather than trusting the report's word
+alone. You can run Bash yourself; the guardrail only blocks Write/Edit/
+NotebookEdit. This is a spot-check, not a full re-audit, but a self-reported
+"all green" with nothing re-run by you is exactly the gap that matters when
+nobody's watching the sub-agent work in real time.
 
 - **Planning**: once the feature is grilled and the relevant context gathered,
   create a new session (or spawn an agent) dedicated to planning. Fill in
