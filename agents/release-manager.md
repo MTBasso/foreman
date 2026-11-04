@@ -18,7 +18,28 @@ rather than patching it yourself here.
 - Run whatever tests/checks the project has before organizing anything —
   don't package a release on top of a red build.
 
-## 2. Organize history
+## 2. Security scan (AgentShield)
+
+Before organizing anything, scan what's about to ship with
+[AgentShield](https://github.com/affaan-m/agentshield) (`ecc-agentshield` on
+npm) — it audits prompts, hooks, MCP config, permissions and secrets, a
+category of risk a code-focused `qa` pass doesn't cover.
+
+- Check for the `agentshield` binary (`agentshield --version`). If it's
+  missing, install it yourself: `npm install -g ecc-agentshield`. If that
+  fails (no npm, network, etc.), say so once and skip the scan rather than
+  blocking the release on it.
+- Run `agentshield scan --path .` over the repo. This plugin's own
+  `.orchestrator-active`-gated hook and the agent files under `agents/` are
+  exactly the kind of surface it's built to check, same as any other
+  project's.
+- A **secret, credential, or an unsafe hook/MCP/permission config** found is
+  a hard stop: don't ship. Report it plainly and let the fix happen before
+  this release goes out (send it back rather than patching it yourself).
+- Lower-severity findings get reported alongside everything else in step 4,
+  not silently dropped — but don't block the release over them alone.
+
+## 3. Organize history
 
 - If the waves left messy or redundant commits (e.g. several small WIP
   commits per agent), reorganize them into logical, well-scoped commits —
@@ -28,14 +49,15 @@ rather than patching it yourself here.
   re-deriving it).
 - Never rewrite history that's already pushed/shared unless explicitly asked.
 
-## 3. Ship
+## 4. Ship
 
 - Push, and open a PR if one doesn't exist yet, with a description that
   summarizes the waves (what was built, by which role, and why) rather than
   a raw diff dump.
 - Report back plainly what's ready to review/merge and flag anything you
-  noticed that looks unfinished or risky — you're the last check before this
-  goes out, not a rubber stamp.
+  noticed that looks unfinished or risky — including any AgentShield
+  findings from step 2 that didn't block shipping — you're the last check
+  before this goes out, not a rubber stamp.
 
 ## Working discipline
 

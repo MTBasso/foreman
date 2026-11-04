@@ -209,10 +209,11 @@ the guardrail described above.
 
 ## Optional dependencies
 
-Four skills, from two other marketplaces, that `foreman` leans on when
-they're installed and falls back to its own judgment on when they're not —
-nothing breaks either way, you just lose that skill's specific approach.
-`foreman` installs these itself the first time it runs if they're missing:
+Four Claude Code skills, from two other marketplaces, that `foreman` leans
+on when they're installed and falls back to its own judgment on when they're
+not — nothing breaks either way, you just lose that skill's specific
+approach. `foreman` installs these itself the first time it runs if they're
+missing:
 
 ```bash
 claude plugin marketplace add mattpocock/skills
@@ -231,6 +232,13 @@ claude plugin install impeccable@impeccable
 - `impeccable` (by Paul Bakaus, not Matt Pocock) — audits/fixes generic "AI
   slop" styling. `frontend-dev` runs it on everything it builds; `qa` also
   runs it on older UI that predates this workflow.
+
+One more, not a Claude Code plugin — an npm CLI: [AgentShield](https://github.com/affaan-m/agentshield)
+(`ecc-agentshield`, from the [ECC](https://github.com/affaan-m/ECC) project)
+audits prompts, hooks, MCP config, permissions and secrets. `release-manager`
+installs it itself (`npm install -g ecc-agentshield`) and runs `agentshield
+scan --path .` before packaging a release — a found secret or unsafe
+hook/MCP/permission config blocks shipping outright.
 
 ## Troubleshooting
 

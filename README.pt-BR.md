@@ -243,6 +243,14 @@ claude plugin install impeccable@impeccable
   estilização genérica de "AI slop". O `frontend-dev` roda em tudo que
   constrói; o `qa` também roda em UI mais antiga, anterior a esse fluxo.
 
+Mais uma, que não é um plugin do Claude Code — um CLI de npm:
+[AgentShield](https://github.com/affaan-m/agentshield) (`ecc-agentshield`,
+do projeto [ECC](https://github.com/affaan-m/ECC)) audita prompts, hooks,
+configuração de MCP, permissões e segredos expostos. O `release-manager`
+instala ele sozinho (`npm install -g ecc-agentshield`) e roda `agentshield
+scan --path .` antes de empacotar um release — um segredo exposto ou uma
+configuração insegura de hook/MCP/permissão bloqueia o lançamento na hora.
+
 ## Problemas comuns
 
 **Uma skill/comando não aparece logo depois de instalar.** As skills do
