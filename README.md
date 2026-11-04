@@ -113,18 +113,34 @@ something real.
 
 ## Updating
 
+How you update depends on how you installed — these are different paths,
+check `claude plugin list` if you're not sure which one applies to you.
+
+**You cloned the repo yourself** (`claude plugin marketplace add
+./foreman` or a local path — maintainers/contributors):
+
 ```bash
 cd /path/to/foreman
 git pull origin main
 ```
 
-That's enough to get the new files — the plugin was installed pointing
-straight at this folder, not a copy, so there's nothing to reinstall. For
-the change to actually take effect in a session: if you only touched
-docs/evals/non-loaded files (like this update), nothing else is needed.
-If you changed a **skill, command, or agent**, either start a **new**
-session, or run `/reload-plugins` in one that's already open — `claude
-plugin marketplace add`/`install` do not need to run again.
+That's enough to get the new files — the plugin reads straight from this
+folder, not a copy, so there's nothing to reinstall.
+
+**You installed pointing at the GitHub repo directly** (`claude plugin
+marketplace add MTBasso/foreman`, without your own clone — most users):
+
+```bash
+claude plugin marketplace update foreman-marketplace
+claude plugin update foreman
+```
+
+Either way, check [CHANGELOG.md](CHANGELOG.md) to see what actually
+changed. For the change to take effect in a session: if it only touched
+docs/evals/non-loaded files, nothing else is needed. If it touched a
+**skill, command, or agent**, start a **new** session, or run
+`/reload-plugins` in one that's already open — `claude plugin install`
+does not need to run again either way.
 
 ## Usage
 

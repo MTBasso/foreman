@@ -117,18 +117,35 @@ num projeto de verdade.
 
 ## Atualizando
 
+Como você atualiza depende de como você instalou — são dois caminhos
+diferentes. Se não tiver certeza qual é o seu, roda `claude plugin list`.
+
+**Você clonou o repositório você mesmo** (`claude plugin marketplace add
+./foreman` ou um caminho local — mantenedores/contribuidores):
+
 ```bash
 cd /caminho/para/foreman
 git pull origin main
 ```
 
-Isso já basta pra trazer os arquivos novos — o plugin foi instalado
-apontando direto pra essa pasta, não uma cópia, então não há nada pra
-reinstalar. Pra mudança valer de verdade dentro de uma sessão: se você só
-mexeu em documentação ou nos testes (como essa atualização), não precisa de
-mais nada. Se você mudou uma **skill, comando ou agente**, abra uma sessão
-**nova**, ou rode `/reload-plugins` numa sessão que já está aberta —
-`claude plugin marketplace add`/`install` não precisam rodar de novo.
+Isso já basta pra trazer os arquivos novos — o plugin lê direto dessa
+pasta, não uma cópia, então não há nada pra reinstalar.
+
+**Você instalou apontando direto pro repositório do GitHub**
+(`claude plugin marketplace add MTBasso/foreman`, sem clonar você mesmo —
+a maioria dos usuários):
+
+```bash
+claude plugin marketplace update foreman-marketplace
+claude plugin update foreman
+```
+
+De qualquer forma, dá uma olhada no [CHANGELOG.md](CHANGELOG.md) pra ver o
+que realmente mudou. Pra mudança valer de verdade dentro de uma sessão: se
+ela só mexeu em documentação ou nos testes, não precisa de mais nada. Se
+mexeu numa **skill, comando ou agente**, abra uma sessão **nova**, ou rode
+`/reload-plugins` numa sessão que já está aberta — `claude plugin install`
+não precisa rodar de novo de qualquer forma.
 
 ## Uso
 
