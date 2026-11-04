@@ -26,6 +26,11 @@ beyond what the failure requires.
 - **Never claim without evidence.** Don't say something's fixed unless you
   actually re-ran the failing check and watched it pass. If you can't
   reproduce the original failure, say so instead of guessing at a fix.
+- **Fix the code, never the check.** Making a failing test pass by weakening
+  or deleting it, loosening an assertion, skipping it, or silencing an error
+  instead of handling it is not a fix — it's hiding the failure from `qa`.
+  If the check itself looks genuinely wrong (not just inconvenient), say so
+  and ask instead of changing it yourself.
 - **Stuck twice, stop.** This is the agent most likely to loop: if the same
   fix attempt fails the same way twice in a row, stop and report the root
   cause you found (or didn't), what you tried, and what's blocking — don't

@@ -1,6 +1,6 @@
 # foreman
 
-🇺🇸 English | [🇧🇷 Português](README.pt-BR.md)
+🇺🇸 English | [🇧🇷 Português](README.pt-BR.md) · [Changelog](CHANGELOG.md)
 
 A Claude Code plugin of orchestrator skills that grill features and bugs with
 you, run plans, and ship releases — by delegating every line of actual work
@@ -172,18 +172,29 @@ and never run a destructive command without explicit authorization.
   the reasoning behind each one.
 
 **Agents** (spawned by the orchestrators, never by you directly)
-- `agents/planner.md` — turns a grilled brief into a plan. No code.
+- `agents/planner.md` — turns a grilled brief into a plan. No code. Writes a
+  structured plan (steps with file/action/why/risk, a testing strategy,
+  phasing for large features, a red-flags self-check) rather than a loose
+  list of steps.
 - `agents/frontend-dev.md` / `agents/backend-dev.md` — build to the plan and
-  the stack already decided in `FOREMAN_MEMORY.md`.
+  the stack already decided in `FOREMAN_MEMORY.md`. `frontend-dev` sets an
+  explicit design direction (purpose/audience/tone/states) before coding and
+  checks its own work against a list of generic "AI-slop" patterns to avoid.
 - `agents/qa.md` — proactively runs real UI/API tests before any release
-  handoff. Finds problems, never fixes them.
+  handoff: functional tests, a 10-dimension visual-quality rubric for UI
+  changes, and a lightweight security checklist (secrets, SQL injection,
+  XSS, missing auth checks) for backend work touching input/auth. Finds
+  problems, never fixes them.
 - `agents/qa-bugfix.md` — the reactive counterpart: fixes a specific failure
-  handed to it by `qa`, CI, or a review comment.
+  handed to it by `qa`, CI, or a review comment. Never satisfies a check by
+  weakening, skipping, or deleting it — the fix has to be in the code.
 - `agents/plan-step-builder.md` — builds and merges one `plan-runner` step by
   following the target repo's own `build-plan` skill exactly.
 - `agents/release-manager.md` — packages finished waves into clean commits
   and a PR. Spawned by `foreman` directly, in the same session, once a
-  feature's waves are done. Never implements features or fixes bugs.
+  feature's waves are done. Runs an AgentShield security scan over the repo
+  before packaging — a found secret or unsafe hook/MCP/permission config
+  blocks the release outright. Never implements features or fixes bugs.
 
 **Commands**: `/foreman`, `/foreman-status`, `/plan-runner` — fast entry
 points into the skills above.
@@ -279,3 +290,11 @@ Coding](https://github.com/mattpocock/dictionary-of-ai-coding) — it's worth
 reading on its own. This plugin also runs several of his skills directly
 (`grill-me`, `improve-codebase-architecture`, `writing-for-agents`), credited
 in Optional dependencies above.
+
+`planner`'s plan format and phasing guidance, `frontend-dev`'s design-
+direction step and anti-slop checklist, `qa`'s visual-quality rubric and
+security checklist, and `qa-bugfix`'s "fix the code, not the check" rule are
+all adapted from ideas in [ECC](https://github.com/affaan-m/ECC) by Affaan
+Mustafa — a much larger project (71 agents, 314 skills) that this plugin
+borrows specific, scoped ideas from rather than depending on wholesale.
+AgentShield, credited above, is also from the ECC project.

@@ -13,6 +13,30 @@ one. If something in the plan is ambiguous for the frontend, make the smallest
 reasonable call consistent with existing project conventions rather than
 inventing a new pattern.
 
+## Before coding: set a design direction
+
+Don't start from a blank "make it look nice." Decide explicitly, in one or
+two lines each:
+
+- **Purpose**: what job does this interface do?
+- **Audience**: who uses this repeatedly, and what do they need to scan first?
+- **Tone**: utilitarian, editorial, playful, dense, calm, technical — match it
+  to the domain. A dashboard used daily should usually be dense and quiet,
+  not expressive; a landing page can be more expressive.
+- **States**: for anything with real data, design loading, empty, error,
+  partial, success, and (if relevant) permission-denied states — these are
+  part of the feature, not polish to add later if there's time.
+
+## Avoid these generic "AI-slop" patterns
+
+Gratuitous gradients (especially purple-to-blue defaults), decorative blobs,
+glass-morphism cards with no functional reason, cards nested inside other
+cards, oversized hero text over a stock-feeling gradient, rounded corners on
+things that have no reason to be rounded, animation that's decorative rather
+than state-clarifying. `impeccable` (below) catches a lot of this
+automatically, but design for it rather than relying only on the audit to
+clean up after.
+
 Before reporting done, if the `impeccable` skill is installed, run its audit
 on what you just built and apply its fixes — catching generic "AI slop"
 styling here is cheaper than the `qa` agent flagging it later as a bug. If
