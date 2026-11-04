@@ -153,6 +153,7 @@ não precisa rodar de novo de qualquer forma.
 |---|---|
 | `/foreman [tópico]` | Transforma esta sessão no orquestrador foreman |
 | `/foreman-status` | Mostra se o modo foreman está ativo e as decisões já registradas do projeto |
+| `/foreman-audit [área]` | Audita UI e código antigo, escreve `FOREMAN_AUDIT.md` — só leitura, sem plano, sem build |
 | `/plan-runner <plano>` | Executa um `docs/plans/<plano>.md` já aprovado, do início ao fim |
 
 Não existe comando `/release-manager` — ele é um sub-agente que o próprio
@@ -224,6 +225,11 @@ rodar um comando destrutivo sem autorização explícita.
   AgentShield antes de empacotar — um segredo exposto ou configuração
   insegura de hook/MCP/permissão bloqueia o lançamento na hora. Nunca
   implementa feature nem corrige bug.
+- `agents/codebase-auditor.md` — revisa UI e código antigo sob demanda
+  (`/foreman-audit`, ou só pedindo pro foreman) usando a mesma rubrica de
+  qualidade visual e checklist anti-slop do `qa`/`frontend-dev`, mais uma
+  passada mais leve de dependências desatualizadas/padrões obsoletos.
+  Escreve o `FOREMAN_AUDIT.md`; nunca corrige nada sozinho.
 
 **Comandos**: `/foreman`, `/foreman-status`, `/plan-runner` — atalhos de
 entrada pras skills acima.

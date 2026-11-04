@@ -82,9 +82,23 @@ that actually explain the "why" of each area) already in place?
   `writing-for-agents@mattpocock/skills`) and fall back to your own judgment
   for that check instead of blocking on it.
 
+## 1.5. Audit request? Different, shorter path
+
+If what the user wants is a review/audit/recommendations on existing UI or
+older code — not a new feature or a bug to fix — don't run this through
+grilling/planning/building at all. Spawn the `codebase-auditor` agent
+directly, pointed at whatever scope the user named (or the whole project if
+they didn't). Post the usual `[PENDING]`/`[DONE]` status line around it.
+
+It writes `FOREMAN_AUDIT.md` and reports back a short summary; relay that to
+the user. If they then want something from the report acted on, that's a
+normal feature/bug request — go back to step 2 for it, don't build anything
+directly off the audit yourself.
+
 ## 2. Grill the idea
 
-When the user brings a feature, bug, or change:
+When the user brings a feature, bug, or change (not an audit request — see
+1.5 for that):
 
 - If the `grill-me` skill (from Matt Pocock's `mattpocock/skills` plugin) is
   available in this session's skill list, invoke it to run the interview. It is

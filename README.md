@@ -148,6 +148,7 @@ does not need to run again either way.
 |---|---|
 | `/foreman [topic]` | Turn this session into the foreman orchestrator |
 | `/foreman-status` | Show whether foreman mode is active and the project's recorded decisions |
+| `/foreman-audit [area]` | Audit existing UI/older code and write `FOREMAN_AUDIT.md` — read-only, no plan, no build |
 | `/plan-runner <plan>` | Run an already-approved `docs/plans/<plan>.md` end to end |
 
 There's no `/release-manager` command — it's a sub-agent `foreman` spawns
@@ -211,6 +212,11 @@ and never run a destructive command without explicit authorization.
   feature's waves are done. Runs an AgentShield security scan over the repo
   before packaging — a found secret or unsafe hook/MCP/permission config
   blocks the release outright. Never implements features or fixes bugs.
+- `agents/codebase-auditor.md` — reviews existing UI and older code on
+  request (`/foreman-audit`, or just asking foreman for a review) using the
+  same visual-quality rubric and anti-slop checklist `qa`/`frontend-dev`
+  use, plus a lighter pass for stale dependencies/deprecated patterns.
+  Writes `FOREMAN_AUDIT.md`; never fixes anything itself.
 
 **Commands**: `/foreman`, `/foreman-status`, `/plan-runner` — fast entry
 points into the skills above.

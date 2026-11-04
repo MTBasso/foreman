@@ -3,6 +3,18 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.3.0 — 2026-11-04
+
+- Added `agents/codebase-auditor.md`: reviews existing UI and older code on
+  request (new `/foreman-audit [area]` command, or just asking `foreman` for
+  a review/recommendations) — not tied to building a specific feature. Uses
+  the same 10-dimension visual-quality rubric and anti-slop checklist as
+  `qa`/`frontend-dev`, plus a lighter pass for stale dependencies and
+  deprecated patterns. Writes `FOREMAN_AUDIT.md`; never fixes anything
+  itself — findings become normal feature/bug requests if acted on.
+- `foreman`'s step 1.5 now routes an audit/review request to this agent
+  directly instead of running it through grilling/planning/building.
+
 ## 0.2.0 — 2026-11-04
 
 - **Quality upgrades to `planner`, `frontend-dev`, `qa`, `qa-bugfix`**,
