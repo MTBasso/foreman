@@ -3,6 +3,49 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.6.0 — 2026-11-05
+
+Adopted patterns surveyed from `anthropics/skills` and `obra/superpowers`:
+
+- **Guardrail fix**: the `.orchestrator-active` hook was blocking
+  Write/Edit/NotebookEdit for delegated sub-agents too, not just the
+  orchestrator itself — it now checks the hook's `agent_id` field (present
+  when a hook fires inside a sub-agent) and only denies the orchestrator's
+  own direct calls.
+- **Isolated workspaces**: `foreman` and `plan-runner` now offer to set up
+  a git worktree before marking orchestrator mode active (detect existing
+  isolation → native tool → `git worktree` fallback → work in place if
+  declined) — see `references/using-worktrees.md`.
+- **Per-run ledger**: `plan-runner` keeps `.foreman/plan-runner/<plan-slug>/
+  progress.md` on disk, read first on resume and appended to after every
+  step — conversation memory doesn't survive compaction, and a lost-place
+  session re-dispatching an already-merged step was the costliest failure
+  mode worth guarding against.
+- **"Rulings, not stalls"**: `foreman`, `plan-runner`, and
+  `plan-step-builder` now decide and log minor ambiguities instead of
+  stopping the run — only four things still stop for the user (an
+  irreversible/destructive op, a security-sensitive action, a side effect
+  outside the worktree like a push/shared-branch merge, or a request/plan
+  too broken to guess at).
+- **Code review discipline**: new `references/code-review-discipline.md`
+  splits requesting a review (real SHAs, isolated context) from receiving
+  one (verify before implementing, push back with reasoning instead of
+  performative agreement) — wired into `foreman`, `qa`, `qa-bugfix`,
+  `release-manager`, and `plan-step-builder`. `release-manager` now
+  requests a review of the whole accumulated diff before packaging if
+  nothing already covered it.
+- **New `/foreman-diagnose` command**: reads the ledger, `FOREMAN_MEMORY.md`,
+  git history, and status lines to diagnose a past orchestrated run that
+  went wrong (repeated work, an ignored plan, a stall, unexpected cost) —
+  read-only, every finding cited to evidence. See
+  `references/diagnosing-a-run.md`.
+- **Decision diagrams**: `foreman` and `plan-runner` gained `dot`-notation
+  flowcharts for "which flow applies here" and "sequential vs. parallel
+  wave dispatch", instead of prose-only decision rules.
+- **New `SessionStart` hook** (`hooks/session-start.sh`): a short reminder
+  on startup/clear/compact that this plugin and its entry points exist,
+  without activating orchestrator mode on its own.
+
 ## 0.5.0 — 2026-11-05
 
 Independent verification, for work done unattended or in parallel:

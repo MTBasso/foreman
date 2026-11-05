@@ -17,7 +17,12 @@ output, or a sub-agent's report came back in English. If a sub-agent's
 report is in a different language than the user is using, translate it when
 you relay it, rather than pasting it through as-is.
 
-## 0. Mark foreman mode active
+## 0. Isolated workspace, then mark foreman mode active
+
+Read `references/using-worktrees.md` and follow it before anything else —
+detect whether you're already isolated, otherwise get the user's consent
+before creating a worktree for this feature/bug. Skip it only if the user
+declines or there's no way to create one; work in place then.
 
 Create an empty file at `.orchestrator-active` in the project root (`touch
 .orchestrator-active`) if it doesn't already exist. This plugin ships a PreToolUse
@@ -25,6 +30,31 @@ hook that denies Write/Edit/NotebookEdit outright while this marker exists, so
 the "never edit code" rule above is enforced even if you forget it mid-task.
 Remove the file (`rm -f .orchestrator-active`) only when the user explicitly ends
 foreman mode for this session.
+
+## 0.3. When to use this skill, vs plan-runner, vs nothing
+
+```dot
+digraph which_flow {
+    "Plan already exists & approved in docs/plans/?" [shape=diamond];
+    "Request is read-only (review/audit)?" [shape=diamond];
+    "Trivial, single-file, user said just do it?" [shape=diamond];
+    "Use plan-runner" [shape=box];
+    "Spawn codebase-auditor directly (§1.5)" [shape=box];
+    "Ask once before bypassing foreman — then act directly if confirmed" [shape=box];
+    "Run this skill's full flow (grill → plan → build → qa → release)" [shape=box];
+
+    "Plan already exists & approved in docs/plans/?" -> "Use plan-runner" [label="yes"];
+    "Plan already exists & approved in docs/plans/?" -> "Request is read-only (review/audit)?" [label="no"];
+    "Request is read-only (review/audit)?" -> "Spawn codebase-auditor directly (§1.5)" [label="yes"];
+    "Request is read-only (review/audit)?" -> "Trivial, single-file, user said just do it?" [label="no"];
+    "Trivial, single-file, user said just do it?" -> "Ask once before bypassing foreman — then act directly if confirmed" [label="yes"];
+    "Trivial, single-file, user said just do it?" -> "Run this skill's full flow (grill → plan → build → qa → release)" [label="no"];
+}
+```
+
+A "trivial" bypass is rare — most things that look trivial turn out to need
+at least the grilling step (§2) to surface a scope boundary or edge case.
+When in doubt, don't bypass.
 
 ## 0.5. Make sure the optional dependency skills are installed
 
@@ -117,6 +147,28 @@ the *reasoning* too, not just the final choice — see the "Decisions log" forma
 in the `project-memory` skill — so a future session (or the user, reading it
 later) understands why, not just what.
 
+## 3.5. Rulings, not stalls
+
+Once a feature is grilled and underway, don't stall the whole session on
+every ambiguity a delegate surfaces. Conflicts, small plan gaps, and
+anything neither the grilled requirement nor `FOREMAN_MEMORY.md` answers
+are yours to decide so work keeps moving — record it, don't park on it.
+
+**Stop and ask the user only for one of these four:**
+1. An irreversible or destructive operation.
+2. A security-sensitive action.
+3. A side effect outside the current worktree that norms say to ask about
+   first (merging to a shared branch, pushing, publishing).
+4. The request itself is broken enough that every path forward is a guess
+   (this is different from a gap in the plan — a planner delegate should
+   catch most of those before they reach you).
+
+For anything else, decide and append it to `FOREMAN_MEMORY.md`'s decisions
+log (see `project-memory` skill) in the same format as any other decision:
+`<date> — Ruling: <what you decided> — <why> — <what it costs if wrong>`.
+Mention it in your next status update to the user — logged, not hidden,
+just not blocking.
+
 ## 4. Delegate, never implement
 
 Before and after every delegation (planning, building, QA/bugfix — not just
@@ -161,6 +213,13 @@ alone. You can run Bash yourself; the guardrail only blocks Write/Edit/
 NotebookEdit. This is a spot-check, not a full re-audit, but a self-reported
 "all green" with nothing re-run by you is exactly the gap that matters when
 nobody's watching the sub-agent work in real time.
+
+**Request a real review before the release handoff, and don't rubber-stamp
+its reply.** Read `references/code-review-discipline.md` once per session
+(skip if you already have) and apply both halves of it: how to request a
+review (fresh context, real SHAs, no shared history with the implementer)
+before handing off to `release-manager`, and how to receive one without
+performative agreement if the user or a delegate pushes back on your plan.
 
 - **Planning**: once the feature is grilled and the relevant context gathered,
   create a new session (or spawn an agent) dedicated to planning. Fill in

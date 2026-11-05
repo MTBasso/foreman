@@ -150,6 +150,7 @@ does not need to run again either way.
 | `/foreman-status` | Show whether foreman mode is active and the project's recorded decisions |
 | `/foreman-audit [area]` | Audit existing UI/older code and write `FOREMAN_AUDIT.md` — read-only, no plan, no build |
 | `/plan-runner <plan>` | Run an already-approved `docs/plans/<plan>.md` end to end |
+| `/foreman-diagnose [run]` | Diagnose why a past orchestrated run went wrong (repeated work, ignored plan, a stall, unexpected cost) — read-only, evidence-cited findings |
 
 There's no `/release-manager` command — it's a sub-agent `foreman` spawns
 itself once a feature's waves are done, in the same session, not a session
@@ -181,7 +182,27 @@ at least one of them itself before relaying a report or handing off to
 and when it spawns independent items in parallel, it runs `git diff --stat`
 over the combined result afterward to catch a file two delegates both
 touched — the kind of conflict that each agent's own "all green" report
-won't surface on its own.
+won't surface on its own. Before a release handoff, it also requests a real
+review of the whole accumulated diff from a fresh, isolated context (see
+`references/code-review-discipline.md`) rather than relying only on
+delegates' self-reports.
+
+## Isolation, a ledger, and rulings instead of stalls
+
+Both orchestrators (`foreman`, `plan-runner`) offer to set up an isolated
+git worktree before touching anything, so a run never lands on whatever
+branch you happened to have checked out — see
+`references/using-worktrees.md`. `plan-runner` also keeps a per-run ledger
+on disk (`.foreman/plan-runner/<plan-slug>/progress.md`), separate from
+conversation memory, so a session that loses its place after a compaction
+can't re-dispatch a step that already merged.
+
+Neither orchestrator stalls the whole session over every ambiguity: they
+decide and log a `Ruling: <what> — <why> — <cost if wrong>` for anything
+that isn't one of four things (an irreversible/destructive op, a
+security-sensitive action, a side effect outside the worktree like a push
+or a shared-branch merge, or a request/plan too broken to guess at) — those
+four are the only reasons either one stops to ask you mid-run.
 
 ## Contents
 
@@ -237,14 +258,19 @@ report, so you see it, not just a description of it. `design-preview`
 already did this directly since it runs in `foreman`'s own session.
 
 **Commands**: `/foreman`, `/foreman-status`, `/foreman-audit`,
-`/plan-runner` — fast entry points into the skills above.
+`/plan-runner`, `/foreman-diagnose` — fast entry points into the skills
+above.
 
-**Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
-the guardrail described above.
+**Hooks**:
+- `hooks/block-edit-during-orchestrator.sh` — the guardrail described above.
+- `hooks/session-start.sh` — a short `SessionStart` reminder (startup/clear/
+  compact) that this plugin exists and when each entry point applies;
+  doesn't activate orchestrator mode on its own.
 
 **References**: `references/*.md` — rare-path content (optional-dependency
-install, guardrail-denial troubleshooting) `foreman` reads on demand instead
-of carrying in its main body on every single invocation.
+install, guardrail-denial troubleshooting, worktree setup, code-review
+discipline, diagnosing a past run) read on demand instead of carried in a
+skill's main body on every single invocation.
 
 **Templates**
 - `templates/handoff-prompt.md` — fixed shape for a delegation prompt, so

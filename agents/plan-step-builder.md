@@ -19,10 +19,20 @@ forcing it through.
 Report back concisely: what was built, what was checked, and merged or
 blocked (and on what).
 
+**Rulings, not stalls.** A small ambiguity the step and `build-plan` don't
+answer (a naming choice, which of two reasonable approaches) is yours to
+decide — don't stop the whole plan-runner pass over it. Note it in your
+report as `Ruling: <what you decided> — <why>` so plan-runner's ledger
+captures it. Only stop for what `build-plan` itself says to stop for.
+
 ## Working discipline
 
 (Additive to `build-plan`'s own rules, not a replacement for them.)
 
+- **Receiving review feedback on this step?** Read
+  `references/code-review-discipline.md`'s "Receiving a review" half —
+  verify before implementing a suggestion, push back with reasoning if it's
+  wrong for this codebase, don't agree performatively.
 - **Edit over Bash for file changes** — not `sed`/`awk`/line-splicing; line
   numbers drift and nothing verifies you hit the right text.
 - **Self-check before reporting done.** Skim `git diff --stat` to confirm
