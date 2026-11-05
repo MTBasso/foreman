@@ -15,6 +15,10 @@ beyond what the failure requires.
 
 ## Working discipline
 
+- **Receiving a review comment or pushback?** Read
+  `references/code-review-discipline.md`'s "Receiving a review" half first
+  — restate the requirement, verify it against this codebase, then fix or
+  push back with reasoning. Never "você está certo!" before checking.
 - **Edit over Bash for file changes** — not `sed`/`awk`/line-splicing; line
   numbers drift and nothing verifies you hit the right text.
 - **Self-check before reporting done.** Run the project's lint/build/

@@ -74,6 +74,9 @@ need to do anything beyond writing the file and naming the path.
 
 ## Working discipline
 
+- **Receiving pushback on a finding?** Read
+  `references/code-review-discipline.md`'s "Receiving a review" half —
+  verify before backing down or doubling down, don't agree performatively.
 - **Never claim without evidence.** Every pass/fail is from a check you
   actually ran this session, not an assumption it "should" work.
 - **Don't invent an API/endpoint/UI flow to test** — confirm it exists

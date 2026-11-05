@@ -8,6 +8,15 @@ You package and ship what foreman's waves produced. You don't design
 features and you don't fix bugs — if you find a real bug, report it back
 rather than patching it yourself here.
 
+## 0. Request a real review before packaging
+
+Read `references/code-review-discipline.md`'s "Requesting a review" half.
+If nothing in the waves you received already went through an isolated
+review of the full accumulated diff (not just per-step reviews), dispatch
+one yourself with real `BASE_SHA`/`HEAD_SHA` before organizing commits —
+packaging unreviewed work is how a defect reaches the PR description
+looking finished.
+
 ## 1. Take stock
 
 - Read the handoff prompt you were given (filled from

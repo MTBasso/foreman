@@ -155,6 +155,7 @@ não precisa rodar de novo de qualquer forma.
 | `/foreman-status` | Mostra se o modo foreman está ativo e as decisões já registradas do projeto |
 | `/foreman-audit [área]` | Audita UI e código antigo, escreve `FOREMAN_AUDIT.md` — só leitura, sem plano, sem build |
 | `/plan-runner <plano>` | Executa um `docs/plans/<plano>.md` já aprovado, do início ao fim |
+| `/foreman-diagnose [execução]` | Diagnostica por que uma execução orquestrada anterior deu errado (trabalho repetido, plano ignorado, travada, custo inesperado) — só leitura, achados com evidência citada |
 
 Não existe comando `/release-manager` — ele é um sub-agente que o próprio
 `foreman` aciona sozinho, assim que as ondas de uma feature terminam, na
@@ -188,7 +189,28 @@ alegações de um delegado antes de repassar um relatório ou entregar pro
 arquivo), e quando aciona itens independentes em paralelo, roda `git diff
 --stat` sobre o resultado combinado depois, pra pegar um arquivo que dois
 delegados mexeram ao mesmo tempo — o tipo de conflito que o "tudo verde" de
-cada agente, sozinho, não revela.
+cada agente, sozinho, não revela. Antes de uma entrega de release, também
+pede uma revisão de verdade sobre o diff acumulado inteiro, a partir de um
+contexto fresco e isolado (veja `references/code-review-discipline.md`), em
+vez de confiar só no autorrelato dos delegados.
+
+## Isolamento, um ledger, e decisões em vez de travar
+
+Os dois orquestradores (`foreman`, `plan-runner`) oferecem configurar um
+worktree git isolado antes de mexer em qualquer coisa, pra uma execução
+nunca cair na branch que você por acaso tinha aberta — veja
+`references/using-worktrees.md`. O `plan-runner` também mantém um ledger
+por execução em disco (`.foreman/plan-runner/<slug-do-plano>/progress.md`),
+separado da memória da conversa, pra uma sessão que perdeu o rumo depois de
+uma compactação não conseguir reacionar um passo que já foi mesclado.
+
+Nenhum dos dois orquestradores trava a sessão inteira por qualquer
+ambiguidade: eles decidem e registram uma `Ruling: <o quê> — <por quê> —
+<custo se errado>` pra qualquer coisa que não seja uma destas quatro
+(uma operação irreversível/destrutiva, uma ação sensível a segurança, um
+efeito colateral fora do worktree como um push ou merge numa branch
+compartilhada, ou um pedido/plano quebrado demais pra chutar) — só essas
+quatro justificam parar e te perguntar no meio da execução.
 
 ## Conteúdo
 
@@ -251,15 +273,19 @@ lê uma descrição. O `design-preview` já fazia isso direto, já que roda
 dentro da própria sessão do `foreman`.
 
 **Comandos**: `/foreman`, `/foreman-status`, `/foreman-audit`,
-`/plan-runner` — atalhos de entrada pras skills acima.
+`/plan-runner`, `/foreman-diagnose` — atalhos de entrada pras skills acima.
 
-**Hooks**: `hooks/hooks.json` + `hooks/block-edit-during-orchestrator.sh` —
-o guardrail descrito acima.
+**Hooks**:
+- `hooks/block-edit-during-orchestrator.sh` — o guardrail descrito acima.
+- `hooks/session-start.sh` — um lembrete curto no `SessionStart` (startup/
+  clear/compact) de que este plugin existe e quando cada ponto de entrada
+  se aplica; não ativa o modo orquestrador sozinho.
 
 **Referências**: `references/*.md` — conteúdo de caminho raro (instalação
-de dependência opcional, resolução de bloqueio do guardrail) que o
-`foreman` lê sob demanda, em vez de carregar no corpo principal toda vez
-que é chamado.
+de dependência opcional, resolução de bloqueio do guardrail, configuração
+de worktree, disciplina de code review, diagnóstico de uma execução
+passada) lido sob demanda, em vez de carregado no corpo principal de uma
+skill toda vez que é chamada.
 
 **Templates**
 - `templates/handoff-prompt.md` — formato fixo de um prompt de delegação,
