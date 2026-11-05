@@ -12,6 +12,15 @@ marker="$project_root/.orchestrator-active"
 if [[ -f "$marker" ]]; then
   tool_name="$(printf '%s' "$input" | jq -r '.tool_name // ""')"
   file_path="$(printf '%s' "$input" | jq -r '.tool_input.file_path // ""')"
+  agent_id="$(printf '%s' "$input" | jq -r '.agent_id // ""')"
+
+  # Delegated sub-agents/teammates (hook fires with an agent_id) are exactly
+  # who the orchestrator is supposed to hand file edits to — only the
+  # orchestrator's own direct calls (no agent_id) need blocking.
+  if [[ -n "$agent_id" ]]; then
+    echo '{}'
+    exit 0
+  fi
 
   # Orchestration bookkeeping, not implementation: let the orchestrator write
   # its own memory file without having to toggle the marker off and on.
