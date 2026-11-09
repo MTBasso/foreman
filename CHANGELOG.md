@@ -3,6 +3,23 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.6.1 — 2026-11-09
+
+Stale-marker fix, reported as "new sessions keep getting edits blocked":
+
+- `hooks/session-start.sh` now reads the `SessionStart` event's `source`
+  field. If `.orchestrator-active` is already present on a `startup` or
+  `clear` (both begin with zero memory of ever running `/foreman`), the
+  session has no way to know it's a leftover from a previous session that
+  crashed or was closed without running `rm -f .orchestrator-active` — it
+  now surfaces that explicitly in `additionalContext` and is told to
+  confirm with the user before relying on it, instead of the guardrail
+  hook silently denying edits with no explanation in sight. `compact` is
+  left alone, since that case can still be a legitimately ongoing run.
+- `foreman` and `plan-runner` now also add `.orchestrator-active` to the
+  project's `.gitignore` the first time they create it — it's session-local
+  bookkeeping and should never be committed or carried between clones.
+
 ## 0.6.0 — 2026-11-05
 
 Adopted patterns surveyed from `anthropics/skills` and `obra/superpowers`:

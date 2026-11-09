@@ -29,8 +29,10 @@ worktree for this plan's run. Skip it only if the user declines or the
 project gives you no way to create one; work in place then.
 
 Create `.orchestrator-active` in the project root if it doesn't exist (same
-marker/guardrail hook `foreman` uses — see that skill for why). Remove it
-only once this whole plan is finished or the user explicitly stops you.
+marker/guardrail hook `foreman` uses — see that skill for why, including the
+`.gitignore` step and what to do if you find the marker already present at
+the start of a session). Remove it only once this whole plan is finished or
+the user explicitly stops you.
 
 ## 0.5. Set up this plan's ledger
 

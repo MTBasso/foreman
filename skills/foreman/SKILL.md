@@ -31,6 +31,16 @@ the "never edit code" rule above is enforced even if you forget it mid-task.
 Remove the file (`rm -f .orchestrator-active`) only when the user explicitly ends
 foreman mode for this session.
 
+Also make sure `.orchestrator-active` is listed in the project's `.gitignore`
+(append it, creating the file if needed, if it isn't there already) — it's
+session-local bookkeeping, not something that should ever be committed or
+carried between clones/machines. A marker left on disk from a session that
+crashed or was closed without running the removal step above is the most
+common cause of a *new* session finding edits mysteriously denied; if you
+ever find `.orchestrator-active` already present at the start of a session
+you don't remember activating, don't assume it's real — confirm with the
+user before relying on it, and `rm -f` it if they don't recognize it either.
+
 ## 0.3. When to use this skill, vs plan-runner, vs nothing
 
 ```dot
