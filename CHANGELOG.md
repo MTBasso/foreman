@@ -3,6 +3,29 @@
 All notable changes to this plugin are documented here. Dates are when the
 change was merged to `main`.
 
+## 0.6.2 — 2026-11-09
+
+Closed a real bypass of the "never edit code" rule, plus some cleanup:
+
+- **Guardrail now covers `Bash`, not just Write/Edit/NotebookEdit.** The
+  orchestrator is explicitly allowed to run `Bash` for spot-checks, so
+  nothing stopped it from editing code through the shell (`sed -i`, `tee`,
+  `cat > file <<EOF`, `patch`, `dd`) while `.orchestrator-active` was set —
+  the exact thing the marker exists to prevent. `hooks.json`'s matcher now
+  includes `Bash`, and `block-edit-during-orchestrator.sh` denies a `Bash`
+  call whose command looks like a file write, with the same kind of
+  exceptions as before (`.foreman/`, `FOREMAN_MEMORY.md`, `/dev/null`, and
+  now `.log`/`.out`/`.txt` so redirecting a spot-check's output to a log
+  file still works). This is a heuristic, not a sandbox — see the new
+  "Known limits" section in `references/orchestrator-marker.md` for what it
+  deliberately doesn't try to catch (e.g. `mv`/`cp` onto a source file).
+- De-duplicated the marker/`.gitignore`/stale-marker instructions that were
+  copy-pasted across `foreman` and `plan-runner`'s `SKILL.md` into a new
+  shared `references/orchestrator-marker.md`.
+- `/foreman-status` now reports the marker's age (minutes since created),
+  not just whether it exists — makes a leftover marker from a crashed
+  session easier to recognize at a glance.
+
 ## 0.6.1 — 2026-11-09
 
 Stale-marker fix, reported as "new sessions keep getting edits blocked":
